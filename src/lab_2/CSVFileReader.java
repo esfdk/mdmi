@@ -1,0 +1,72 @@
+package lab_2;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class CSVFileReader {
+	public static String[][] read(String csvFile, boolean useNullForBlank)
+			throws IOException {
+		List<String[]> lines = new ArrayList<String[]>();
+
+		BufferedReader bufRdr = new BufferedReader(new FileReader(new File(
+				csvFile)));
+		// read the header
+		String line = bufRdr.readLine();
+		StringTokenizer tok = new StringTokenizer(line, ";");
+		final int numberOfColumns = tok.countTokens();
+
+		// read each line of text file
+		while ((line = bufRdr.readLine()) != null) {
+			int col = 0;
+			StringTokenizer st = new StringTokenizer(line, ";");
+			String[] lineTokens = new String[numberOfColumns];
+			while (st.hasMoreTokens()) {
+				// get next token and store it in the array
+				lineTokens[col] = st.nextToken();
+				if (!useNullForBlank && lineTokens[col] == null)
+					lineTokens[col] = "";
+				col++;
+			}
+			// If last column was null
+			if (!useNullForBlank) {
+				while (col < numberOfColumns) {
+					if (lineTokens[col] == null)
+						lineTokens[col] = "";
+					col++;
+				}
+			}
+
+			lines.add(lineTokens);
+		}
+		String[][] ret = new String[lines.size()][];
+		bufRdr.close();
+		return lines.toArray(ret);
+	}
+
+	public static void main(String args[]) {
+		try {
+			String[][] data = read("Files\\Data_Mining_Student_DataSet_Spring_2013.csv", false);
+			
+			// Fill in global variables
+			data = Cleaner.fillInValues(data, 18, "Don't know"); // Fill in SQL server with "Don't know"
+			data = Cleaner.fillInValues(data, 20, "Don't know"); // Fill in 44523673 with "Don't know"
+			data = Cleaner.fillInValues(data, 21, "Don't know"); // Fill in noor hometown with "Don't know"
+			data = Cleaner.fillInValues(data, 23, "Don't know"); // Fill in solar system with "Don't know"
+			data = Cleaner.fillInValues(data, 25, "Don't know"); // Fill in seq_name with "Don't know"
+			
+			// Fill in with median
+			data = Cleaner.fillInMedian(data, 22);
+			for (String[] line : data) {
+				System.out.println(Arrays.toString(line));
+			}
+		} catch (IOException e) {
+			System.err.println(e.getLocalizedMessage());
+		}
+	}
+}
