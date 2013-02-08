@@ -1,4 +1,6 @@
 *.class
+org.eclipse.jdt.core.prefs
+
 
 # Package Files #
 *.jar
