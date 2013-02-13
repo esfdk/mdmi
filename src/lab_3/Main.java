@@ -16,7 +16,6 @@ public class Main {
 	public static void main(String[] args) {
 		// First step - Load data and convert to Mushroom objects.
 		ArrayList<Mushroom> mushrooms = DataLoader.LoadData();
-		
 	}
 
 }

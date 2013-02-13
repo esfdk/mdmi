@@ -22,7 +22,7 @@ public class CSVFileReader {
 		final int numberOfColumns = tok.countTokens();
 
 		// read each line of text file
-		while ((line = bufRdr.readLine()) != null) {
+		do {
 			int col = 0;
 			StringTokenizer st = new StringTokenizer(line, ",");
 			String[] lineTokens = new String[numberOfColumns];
@@ -43,7 +43,7 @@ public class CSVFileReader {
 			}
 
 			lines.add(lineTokens);
-		}
+		}while ((line = bufRdr.readLine()) != null);
 		String[][] ret = new String[lines.size()][];
 		bufRdr.close();
 		return lines.toArray(ret);

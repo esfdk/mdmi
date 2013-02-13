@@ -74,19 +74,82 @@ public class Mushroom {
 	public Ring_Number m_ring_number;
 	
 	public Ring_Type m_ring_type;
-	
+
 	public Spore_Print_Color m_spore_color;
 		
 	public Population m_population;
 	
 	public Habitat m_habitat;
 	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	@Override
+	public String toString() {
+		return "Mushroom [m_Class=" + m_Class + ", m_cap_shape=" + m_cap_shape
+				+ ", m_cap_surface=" + m_cap_surface + ", m_cap_color="
+				+ m_cap_color + ", m_bruises=" + m_bruises + ", m_odor="
+				+ m_odor + ",\n m_gill_attach=" + m_gill_attach
+				+ ", m_gill_spacing=" + m_gill_spacing + ", m_gill_size="
+				+ m_gill_size + ", m_gill_color=" + m_gill_color
+				+ ", m_stalk_shape=" + m_stalk_shape + ", m_stalk_root="
+				+ m_stalk_root + ",\n m_stalk_surface_above="
+				+ m_stalk_surface_above + ", m_stalk_surface_below="
+				+ m_stalk_surface_below + ", m_stalk_color_above="
+				+ m_stalk_color_above + ", m_stalk_color_below="
+				+ m_stalk_color_below + ",\n m_veil_type=" + m_veil_type
+				+ ", m_veil_color=" + m_veil_color + ", m_ring_number="
+				+ m_ring_number + ", m_ring_type=" + m_ring_type
+				+ ", m_spore_color=" + m_spore_color + ", m_population="
+				+ m_population + ", m_habitat=" + m_habitat + "]";
 	}
-
+	
+	public static int distance(Mushroom a, Mushroom b)
+	{
+		int dist = 0;
+		
+		if(!a.m_cap_shape.equals(b.m_cap_shape)) dist++;
+		
+		if(!a.m_cap_surface.equals(b.m_cap_surface)) dist++;
+		
+		if(!a.m_cap_color.equals(b.m_cap_color)) dist++;
+		
+		if(!a.m_bruises.equals(b.m_bruises)) dist++;
+		
+		if(!a.m_odor.equals(b.m_odor)) dist++;
+		
+		if(!a.m_gill_attach.equals(b.m_gill_attach)) dist++;
+		
+		if(!a.m_gill_spacing.equals(b.m_gill_spacing)) dist++;
+		
+		if(!a.m_gill_size.equals(b.m_gill_size)) dist++;
+		
+		if(!a.m_gill_color.equals(b.m_gill_color)) dist++;
+		
+		if(!a.m_stalk_shape.equals(b.m_stalk_shape)) dist++;
+		
+		if(!a.m_stalk_root.equals(b.m_stalk_root)) dist++;
+		
+		if(!a.m_stalk_surface_above.equals(b.m_stalk_surface_above)) dist++;
+		
+		if(!a.m_stalk_surface_below.equals(b.m_stalk_surface_below)) dist++;
+		
+		if(!a.m_stalk_color_above.equals(b.m_stalk_color_above)) dist++;
+		
+		if(!a.m_stalk_color_below.equals(b.m_stalk_color_below)) dist++;
+		
+		if(!a.m_veil_type.equals(b.m_veil_type)) dist++;
+		
+		if(!a.m_veil_color.equals(b.m_veil_color)) dist++;
+		
+		if(!a.m_ring_number.equals(b.m_ring_number)) dist++;
+		
+		if(!a.m_ring_type.equals(b.m_ring_type)) dist++;
+		
+		if(!a.m_spore_color.equals(b.m_spore_color)) dist++;
+		
+		if(!a.m_population.equals(b.m_population)) dist++;
+		
+		if(!a.m_habitat.equals(b.m_habitat)) dist++;
+		
+		return dist;
+	}
+	
 }
