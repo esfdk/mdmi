@@ -1,5 +1,8 @@
 package lab_3;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lab_3.data.Bruises;
 import lab_3.data.Cap_Color;
 import lab_3.data.Cap_Shape;
@@ -152,4 +155,62 @@ public class Mushroom {
 		return dist;
 	}
 	
+	public static List<Mushroom> getKNearest(Mushroom a, List<Mushroom> trainingData, int k)
+	{
+		Pair<Mushroom, Integer>[] nearestShrooms = new Pair[k];
+		
+		for(int i = 0; i < k; i++)
+		{
+			Mushroom b = trainingData.get(i);
+			int distance = distance(a, b);
+			nearestShrooms[i] = new Pair<Mushroom, Integer>(b, distance); 
+		}
+		
+		int trainingDataSize = trainingData.size();
+		
+		for(int i = k; i < trainingDataSize; i++)
+		{
+			Mushroom b = trainingData.get(i);
+			int distance = distance(a, b);
+			
+			int furthestShroom = 0;
+			
+			for(int j = 0; j < k; j++)
+			{
+				if(nearestShrooms[j].right > nearestShrooms[furthestShroom].right)
+				{
+					furthestShroom = j;
+				}
+			}
+			
+			if(nearestShrooms[furthestShroom].right > distance)
+			{
+				nearestShrooms[furthestShroom] = new Pair<Mushroom, Integer>(b, distance);
+			}
+			
+		}
+		
+		ArrayList<Mushroom> nm = new ArrayList<Mushroom>();
+		
+		for(Pair<Mushroom, Integer> p : nearestShrooms)
+		{
+			nm.add(p.left);
+		}
+		
+		return nm;
+	}
+	
+	public static boolean isPoisonousKNN(Mushroom m, List<Mushroom> trainingData, int k)
+	{
+		List<Mushroom> tenNearest = getKNearest(m, trainingData, k);
+		
+		int amountOfPoisonShrooms = 0;
+		
+		for(Mushroom shroom : tenNearest)
+		{
+			if(shroom.m_Class.equals(Class_Label.poisonous)) amountOfPoisonShrooms++;
+		}
+		
+		return amountOfPoisonShrooms >= (k / 2);
+	}
 }
