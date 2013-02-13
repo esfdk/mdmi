@@ -19,7 +19,7 @@ public class DataLoader {
 		
 		//First step load in data from the text file.
 		try {
-			String[][] data = CSVFileReader.read("agaricus-lepiotadata.txt", false);
+			String[][] data = CSVFileReader.read("Files\\Lab3\\agaricus-lepiotadata.txt", false);
 			
 			
 			
