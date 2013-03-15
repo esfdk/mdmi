@@ -51,7 +51,11 @@ public class CSVFileReader {
 
 	public static void main(String args[]) {
 		try {
-			String[][] data = read("Files\\Data_Mining_Student_DataSet_Spring_2013.csv", false);
+			String[][] data = read("Files\\Lab2\\Data_Mining_Student_DataSet_Spring_2013.csv", false);
+			
+			data = Cleaner.trimToFirstInt(data, 23);
+			
+			data = Cleaner.trimToString(data, 25, "Fibo", "Fibonacci");
 			
 			// Fill in global variables
 			data = Cleaner.fillInValues(data, 18, "Don't know"); // Fill in SQL server with "Don't know"
