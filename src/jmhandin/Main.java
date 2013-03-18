@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import jmhandin.other.CSVFileReader;
-import jmhandin.preprocessing.*;
 
 public class Main {
 
@@ -13,39 +12,70 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String args[]) {
-		try {
-			String[][] data = CSVFileReader.read("Files\\Lab2\\Data_Mining_Student_DataSet_Spring_2013.csv", false);
+		try 
+		{
+			String[][] data = CSVFileReader.read("Files\\jmhandin\\Data_Mining_Student_DataSet_Spring_2013.csv", false);
 			
-			data = WrongFormat.trimToFirstInt(data, 23);
-			
-			data = WrongFormat.transformString(data, 25, "Fibo", "Fibonacci");
-			
-			// Fill in global variables
-			
-			// Fill in with median
-			data = MissingValues.fillInMedian(data, 22);
-			for (String[] line : data) {
+			// Print the dataset
+			for (String[] line : data) 
+			{
 				System.out.println(Arrays.toString(line));
 			}
-		} catch (IOException e) {
+			
+			fillValues(data);
+			correctFormat(data);
+			
+			// Print cleaned data set
+			for (String[] line : data) 
+			{
+				System.out.println(Arrays.toString(line));
+			}
+			
+			preprocess(data);
+			
+			// Print the completely pre-processed data set
+			for (String[] line : data) 
+			{
+				System.out.println(Arrays.toString(line));
+			}
+			
+			
+		} catch (IOException e) 
+		{
 			System.err.println(e.getLocalizedMessage());
 		}
 	}
 	
 	/**
 	 * 
+	 * @param dataset The data set to pre-process.
+	 * @return
 	 */
-	public static void fillValues()
+	public static String[][] fillValues(String[][] dataset)
 	{
 		
+		return dataset;
 	}
 	
 	/**
 	 * 
+	 * @param dataset The data set to pre-process.
+	 * @return
 	 */
-	public static void correctFormat()
+	public static String[][] correctFormat(String[][] dataset)
 	{
 		
+		return dataset;
 	}
 
+	/**
+	 * 
+	 * @param dataset The data set to pre-process.
+	 * @return
+	 */
+	public static String[][] preprocess(String[][] dataset)
+	{
+		
+		return dataset;
+	}
 }
