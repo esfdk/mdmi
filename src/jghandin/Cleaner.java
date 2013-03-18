@@ -26,7 +26,8 @@ public class Cleaner
 		for(int i = 0; i < dataset.length; i++)
 		{
 			// Scans the current row, looking for ints.
-			Scanner scan = new Scanner(dataset[i][columnToTrim]).useDelimiter("[^0-9]+");
+			Scanner scan = new Scanner(dataset[i][columnToTrim]);
+			scan.useDelimiter("[^0-9]+");
 
 			try
 			{
@@ -39,6 +40,8 @@ public class Cleaner
 				// Else set it to the defaultValue
 				dataset[i][columnToTrim] = "" + defaultValue;
 			}
+			
+			scan.close();
 			
 		}
 		

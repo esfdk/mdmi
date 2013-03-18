@@ -25,6 +25,7 @@ public class Main
 			data = CSVFileReader.read("Files\\Lab2\\Data_Mining_Student_DataSet_Spring_2013.csv", false);
 			
 			cleanDataset(data);
+			kMeans kM = new kMeans(data, 3);
 		} 
 		catch (IOException e) 
 		{
@@ -72,5 +73,4 @@ public class Main
 		
 		return dataset;
 	}
-
 }

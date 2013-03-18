@@ -5,13 +5,14 @@ import java.util.ArrayList;
 /**
  * A pair of values.
  * 
- * @author Jakob Melnyk 
+ * @author Jakob Melnyk & Jacob Grooss
  * @reference http://stackoverflow.com/questions/2670982/using-tuples-in-java
  *
  * @param <LeftType> Type of left value
  * @param <RightType> Type of right value
  */
-public class Pair<LeftType, RightType> { 
+public class Pair<LeftType, RightType> 
+{ 
 	public final LeftType left; 
 	public final RightType right; 
 	
@@ -21,7 +22,8 @@ public class Pair<LeftType, RightType> {
 	 * @param left The left value.
 	 * @param right The right value.
 	 */
-	public Pair(LeftType left, RightType right) { 
+	public Pair(LeftType left, RightType right) 
+	{ 
 		this.left = left; 
 		this.right = right; 
 	}
@@ -42,6 +44,7 @@ public class Pair<LeftType, RightType> {
 				return al.indexOf(p);
 			}
 		}
+		
 		return -1;
 	}
 } 
