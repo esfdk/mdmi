@@ -1,5 +1,6 @@
 package jmhandin.preprocessing;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import lab_2.Pair;
@@ -7,7 +8,7 @@ import lab_2.Pair;
 /**
  * Contains static methods for filling in missing values in different ways.
  * 
- * @author Jakob Melnyk jmel@itu.dk (in collaboration with Jacob Grooss jcgr@itu.dk)
+ * @author Jakob Melnyk, jmel@itu.dk (in collaboration with Jacob Grooss, jcgr@itu.dk)
  */
 public class MissingValues {
 	
@@ -45,15 +46,16 @@ public class MissingValues {
 		
 		for(int i = 0; i < dataSet.length; i++)
 		{
+			// Finds the index of the pair containing the value in the column. 
 			int index = Pair.indexOfAPair(timesSeen, dataSet[i][columnToFill].toLowerCase().trim());
 			
-			if(index >= 0)
+			if(index >= 0) // If the value has been seen before, increase the number of times it has been seen. 
 			{
 				Pair<String, Integer> oldPair = timesSeen.get(index);
 				Pair<String, Integer> newPair = new Pair<String, Integer>(oldPair.left, oldPair.right + 1);
 				timesSeen.set(index, newPair);
 			}
-			else
+			else // Add the value to list of items seen.
 			{
 				Pair<String, Integer> newPair = new Pair<String, Integer>(dataSet[i][columnToFill].toLowerCase().trim(), 1);
 				timesSeen.add(newPair);
@@ -73,6 +75,35 @@ public class MissingValues {
 		}
 		
 		fillInValues(dataSet, columnToFill, valueToFill);
+		return dataSet;
+	}
+	
+	/**
+	 * Checks if a string is a colour.
+	 * 
+	 * @param colorAsString The string to be checked for a colour.
+	 * @return True if string contains a colour recognised by java else false.
+	 */
+	private static boolean isColor(String colorAsString)
+	{
+		if (colorAsString == null) // If string is null, it is not a colour.
+		{
+			return false;
+		}
+		try 
+		{
+			Color.class.getField(colorAsString); // Get colour from value using reflection
+			return true;
+		} catch (Exception ce) 
+		{
+			return false;  // If it is not a colour
+		}
+	}
+	
+	public static String[][] checkColorColumn(String[][] dataSet, int column)
+	{
+		// TODO: Implement checkColorColumn
+		
 		return dataSet;
 	}
 }
