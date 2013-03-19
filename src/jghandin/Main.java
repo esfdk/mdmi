@@ -1,6 +1,7 @@
 package jghandin;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Split the people into clusters based on DoB, Year, Uni study and Prog Skill. 
@@ -26,6 +27,12 @@ public class Main
 			
 			cleanDataset(data);
 			kMeans kM = new kMeans(data, 3);
+
+			ArrayList<kMeansCluster> clusters = kM.getClusters();
+			for (kMeansCluster kmC : clusters)
+			{
+				System.out.println(kmC.toString());
+			}
 		} 
 		catch (IOException e) 
 		{
