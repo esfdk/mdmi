@@ -14,7 +14,14 @@ public class kMeans
 	private ArrayList<kMeansDataPoint> dataPoints;
 	private ArrayList<kMeansCluster> clusters;
 	
-	public kMeans(String[][] dataset, int amountOfClusters)
+	/**
+	 * Clusters the given data in amountOfClusters clusters by using the
+	 * k-means algorithm
+	 * 
+	 * @param dataset The dataset to cluster
+	 * @param amountOfClusters The amount of clusters to make
+	 */
+	public void clusterData(String[][] dataset, int amountOfClusters)
 	{
 		this.amountOfDataPoints = dataset.length;
 		this.amountofClusters = amountOfClusters;
@@ -25,10 +32,9 @@ public class kMeans
 		for(int i = 0; i < this.amountOfDataPoints; i++)
 		{
 			int age = Integer.parseInt(dataset[i][1]);
-			int dob = Integer.parseInt(dataset[i][2]);
 			int progSkill = Integer.parseInt(dataset[i][3]);
 			int uniStudy = Integer.parseInt(dataset[i][4]);
-			kMeansDataPoint dp = new kMeansDataPoint(i, age, dob, progSkill, uniStudy);
+			kMeansDataPoint dp = new kMeansDataPoint(i, age, progSkill, uniStudy);
 			dataPoints.add(dp);
 		}
 		
@@ -36,7 +42,65 @@ public class kMeans
 		this.initialClustering();
 		this.finishClustering();
 	}
+
+	/**
+	 * Prints the results from the kMeans algorithm.
+	 * 
+	 * @param dataset The dataset
+	 * @param clusters The clusters
+	 */
+	public void printCorrectAnswers(String[][] dataset, ArrayList<kMeansCluster> clusters)
+	{
+		// Array of arrays. Holds data for each cluster.
+		// [][0] = clusterId, [][1] = totalAnswers, [][2] = correctSolarSystem
+		// [][3] = correctNumSequence, [][4] = correctSeqName  
+		int[][] rightAnswers = new int[clusters.size()][5];
+		
+		// Counts the number of correct answers for each column/answer combination
+		for (kMeansCluster kmC : clusters)
+		{
+			ArrayList<kMeansDataPoint> dataPoints = kmC.getClusterPoints();
+			rightAnswers[kmC.getId()][0] = kmC.getId();
+			rightAnswers[kmC.getId()][1] = dataPoints.size();
+			
+			for (kMeansDataPoint kmDP : dataPoints)
+			{
+				if (DataTransformation.convertToInt(dataset[kmDP.getOriginalID()][EColumns.solar_system_planets.ordinal()]) == 8)
+				{
+					rightAnswers[kmC.getId()][2] += 1;
+				}
+				if (DataTransformation.convertToInt(dataset[kmDP.getOriginalID()][EColumns.num_sequence.ordinal()]) == 55)
+				{
+					rightAnswers[kmC.getId()][3] += 1;
+				}
+				if (dataset[kmDP.getOriginalID()][EColumns.seq_name.ordinal()].equals("Fibonacci"))
+				{
+					rightAnswers[kmC.getId()][4] += 1;
+				}
+			}
+		}
+		
+		// Prints results for each cluster
+		for (int[] clusterAnswer : rightAnswers)
+		{
+			int amountOfAnswers = clusterAnswer[1];
+			System.out.println();
+			System.out.println("Cluster " + clusterAnswer[0] + " has " + amountOfAnswers + " answers.");
+			System.out.println("The % of correct answers were:");
+			System.out.println("   1. Planets in solar system: " 
+						+ getPercent(amountOfAnswers, clusterAnswer[2]) + "% correct");
+			System.out.println("   2. Next in sequence:        " 
+					+ getPercent(amountOfAnswers, clusterAnswer[3]) + "% correct");
+			System.out.println("   3. Sequence name:           " 
+					+ getPercent(amountOfAnswers, clusterAnswer[4]) + "% correct");
+		}
+		
+		System.out.println();
+	}
 	
+	/**
+	 * @return the clusters
+	 */
 	public ArrayList<kMeansCluster> getClusters()
 	{
 		return this.clusters;
@@ -57,9 +121,9 @@ public class kMeans
 		}
 		
 		// Arrays holding the lowest and highest values for age, dob, progSkill and uniStudy
-		// 0 = age, 1 = dob, 2 = progSkill, 3 = uniStudy
-		int[] lowest = new int[4];
-		int[] highest = new int[4];
+		// 0 = age, 1 = progSkill, 2 = uniStudy
+		int[] lowest = new int[3];
+		int[] highest = new int[3];
 		
 		// Setting default values, so the comparisons will work properly.
 		for (int i = 0; i < lowest.length; i++)
@@ -73,12 +137,10 @@ public class kMeans
 		{
 			if (dp.getAge() < lowest[0]) lowest[0] = dp.getAge();
 			if (dp.getAge() > highest[0]) highest[0] = dp.getAge();
-			if (dp.getDob() < lowest[1]) lowest[1] = dp.getDob();
-			if (dp.getDob() > highest[1]) highest[1] = dp.getDob();
-			if (dp.getProgSkill() < lowest[2]) lowest[2] = dp.getProgSkill();
-			if (dp.getProgSkill() > highest[2]) highest[2] = dp.getProgSkill();
-			if (dp.getUniStudy() < lowest[3]) lowest[3] = dp.getUniStudy();
-			if (dp.getUniStudy() > highest[3]) highest[3] = dp.getUniStudy();
+			if (dp.getProgSkill() < lowest[1]) lowest[1] = dp.getProgSkill();
+			if (dp.getProgSkill() > highest[1]) highest[1] = dp.getProgSkill();
+			if (dp.getUniStudy() < lowest[2]) lowest[2] = dp.getUniStudy();
+			if (dp.getUniStudy() > highest[2]) highest[2] = dp.getUniStudy();
 		}
 		
 		// Changes the value of each centroid to split the data between
@@ -86,9 +148,8 @@ public class kMeans
 		for (kMeansCentroid kmC : centroids)
 		{
 			kmC.setAge(this.getValueWithInterval(lowest, highest, 0, kmC.getId()));
-			kmC.setDob(this.getValueWithInterval(lowest, highest, 1, kmC.getId()));
-			kmC.setProgSkill(this.getValueWithInterval(lowest, highest, 2, kmC.getId()));
-			kmC.setUniStudy(this.getValueWithInterval(lowest, highest, 3, kmC.getId()));
+			kmC.setProgSkill(this.getValueWithInterval(lowest, highest, 1, kmC.getId()));
+			kmC.setUniStudy(this.getValueWithInterval(lowest, highest, 1, kmC.getId()));
 			
 			this.clusters.add(new kMeansCluster(kmC));
 		}
@@ -195,8 +256,9 @@ public class kMeans
 	private double eDistance(kMeansDataPoint dp, kMeansCentroid c)
 	{
 		double result;
-		result = Math.pow((dp.getAge() - c.getAge()), 2) + Math.pow((dp.getDob() - c.getDob()), 2) +
-				Math.pow((dp.getProgSkill() - c.getProgSkill()), 2) + Math.pow((dp.getUniStudy() - c.getUniStudy()), 2);
+		result = Math.pow((dp.getAge() - c.getAge()), 2) 
+				+ Math.pow((dp.getProgSkill() - c.getProgSkill()), 2) 
+				+ Math.pow((dp.getUniStudy() - c.getUniStudy()), 2);
 		result = Math.sqrt(result);
 		
 		return result;
@@ -209,9 +271,8 @@ public class kMeans
 	 * @param highest The array holding the highest values
 	 * @param index The value that tells what value in the arrays to access.
 	 * 				0 = age
-	 * 				1 = dob
-	 * 				2 = progSkill
-	 * 				3 = uniStudy
+	 * 				1 = progSkill
+	 * 				1 = uniStudy
 	 * @param centroidNumber The number of the centroid
 	 * @return A value
 	 */
@@ -220,10 +281,23 @@ public class kMeans
 		double interval = (double)(highest[index] - lowest[index]) / (this.amountofClusters - 1);
 		double result = lowest[index] + (interval * centroidNumber);
 		
-		// Manipulating both ends a bit, so there are no extreme centroids in either end
-		if (centroidNumber == 0) result += (interval / 2);
-		if (centroidNumber == this.amountofClusters - 1) result -= (interval / 2);
-		
 		return result;
+	}
+	
+	/**
+	 * Converts to percentage
+	 * 
+	 * @param total The total amount
+	 * @param actual The actual amount
+	 * @return How high a % actual is of total
+	 */
+	private int getPercent(int total, int actual)
+	{
+		double result = 0;
+		
+		result = (((double)total - (double)actual) / (double)total) * 100;
+		result = 100 - result;
+		
+		return (int)result;
 	}
 }

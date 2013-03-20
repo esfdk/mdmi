@@ -12,61 +12,163 @@ import java.util.ArrayList;
  */
 public class Main
 {
-
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args)
 	{
-		String[][] data = null;
-		
-		try 
-		{
-			// Reads the dataset
-			data = CSVFileReader.read("Files\\Lab2\\Data_Mining_Student_DataSet_Spring_2013.csv", false);
-			
-			cleanDataset(data);
-			kMeans kM = new kMeans(data, 3);
+		kMeans km = new kMeans();
+		String[][] dataset = null;
+		kNearestNeighbor knn = new kNearestNeighbor();
+				
+		dataset = kMeansLoadAndCleanDataset();
+		km.clusterData(dataset, 3);
+		km.printCorrectAnswers(dataset, km.getClusters());
 
-			ArrayList<kMeansCluster> clusters = kM.getClusters();
-			for (kMeansCluster kmC : clusters)
-			{
-				System.out.println(kmC.toString());
-			}
-		} 
-		catch (IOException e) 
-		{
-			System.err.println(e.getLocalizedMessage());
-		}
+		dataset = loadAndCleanDatasetKNN();
+		dataset = discrentizeDatasetKNN(dataset);
+		knn.printResultsFor(dataset, 1, 5);
+
+		dataset = loadAndCleanDatasetKNN();
+		dataset = normalizeDatasetKNN(dataset);
+		knn.printResultsFor(dataset, 1, 5);
 	}
 	
 	/**
-	 * Calls the necessary methods to clean the dataset
+	 * Normalizes the dataset for the kNN algorithm
+	 * 
+	 * @param dataset The dataset
+	 * @return The updated dataset
+	 */
+	private static String[][] normalizeDatasetKNN(String[][] dataset)
+	{
+		dataset = DataTransformation.normalizeColumn(dataset, EColumns.age.ordinal(), 20, 0);
+		dataset = DataTransformation.normalizeColumn(dataset, EColumns.prog_skill.ordinal(), 20, 0);
+		dataset = DataTransformation.normalizeColumn(dataset, EColumns.yrs_of_uni_study.ordinal(), 20, 0);
+		
+		return dataset;
+	}
+	
+	/**
+	 * Discrentizes the dataset for the kNN algorithm
+	 * 
+	 * @param dataset The dataset
+	 * @return The updated dataset
+	 */
+	private static String[][] discrentizeDatasetKNN(String[][] dataset)
+	{
+		ArrayList<Pair<Integer, Integer>> intervals = new ArrayList<Pair<Integer, Integer>>();
+
+		// Discretizes the values for age
+		intervals.add(new Pair<Integer, Integer>(0, 19));
+		intervals.add(new Pair<Integer, Integer>(20, 24));
+		intervals.add(new Pair<Integer, Integer>(25, 29));
+		intervals.add(new Pair<Integer, Integer>(30, 100));
+		dataset = DataTransformation.discretizeColumn(dataset, intervals, EColumns.age.ordinal());
+
+		// Discretizes the values for prog_skill
+		intervals = new ArrayList<Pair<Integer,Integer>>();
+		intervals.add(new Pair<Integer, Integer>(0, 3));
+		intervals.add(new Pair<Integer, Integer>(4, 7));
+		intervals.add(new Pair<Integer, Integer>(8, 10));
+		dataset = DataTransformation.discretizeColumn(dataset, intervals, EColumns.prog_skill.ordinal());
+
+		// Discretizes the values for prog_skill
+		intervals = new ArrayList<Pair<Integer,Integer>>();
+		intervals.add(new Pair<Integer, Integer>(0, 3));
+		intervals.add(new Pair<Integer, Integer>(4, 7));
+		intervals.add(new Pair<Integer, Integer>(8, 12));
+		dataset = DataTransformation.discretizeColumn(dataset, intervals, EColumns.yrs_of_uni_study.ordinal());		
+		
+		return dataset;
+	}
+	
+	/**
+	 * Loads the data set and does basic cleaning to prepare it for the kNN algorithm.
+	 * 
+	 * @return The updated dataset
+	 */
+	private static String[][] loadAndCleanDatasetKNN()
+	{
+		String[][] dataset = null;
+		
+		try
+		{
+			dataset = CSVFileReader.read("src\\jghandin\\Data_Mining_Student_DataSet_Spring_2013.csv", false);
+			
+			// Formats the age and date of birth
+			dataset = DataTransformation.formatDateOfBirth(dataset);
+			
+			 // Trims the prog_skill column
+			dataset = DataTransformation.trimToFirstInt(dataset, EColumns.prog_skill.ordinal(), 0);
+			// Trims the yrs_of_uni_study column
+			dataset = DataTransformation.trimToFirstInt(dataset, EColumns.yrs_of_uni_study.ordinal(), 0); 
+			// Trims the solar_system_planets column
+			dataset = DataTransformation.trimToFirstInt(dataset, EColumns.solar_system_planets.ordinal(), 0); 
+
+			// Makes sure that stuff is spelled the same way
+			dataset = DataTransformation.trimToString(dataset, EColumns.seq_name.ordinal(), "Fibo", "Fibonacci");
+			dataset = DataTransformation.trimToString(dataset, EColumns.more_dk_mnts.ordinal(), "Yes", "Yes");
+			dataset = DataTransformation.trimToString(dataset, EColumns.more_dk_mnts.ordinal(), "No", "No");
+			dataset = DataTransformation.trimToString(dataset, EColumns.winter_tired.ordinal(), "Yes", "Yes");
+			dataset = DataTransformation.trimToString(dataset, EColumns.winter_tired.ordinal(), "No", "No");
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return dataset;
+	}
+	
+	/**
+	 * Loads and cleans the dataset for the kMeans algorithm
 	 * 
 	 * @param dataset The dataset
 	 * @return The cleaned dataset
 	 */
-	private static String[][] cleanDataset(String[][] dataset)
+	private static String[][] kMeansLoadAndCleanDataset()
 	{
-		// Formats the age and date of birth
-		dataset = Cleaner.fixBirthAndAge(dataset);
-		
-		 // Trims the prog_skill column
-		dataset = Cleaner.trimToFirstInt(dataset, 03, 0);
-		// Trims the yrs_of_uni_study column
-		dataset = Cleaner.trimToFirstInt(dataset, 04, 0); 
-		// Trims the solar_system_planets column
-		dataset = Cleaner.trimToFirstInt(dataset, 23, 0); 
+		String[][] dataset = null;
+		try
+		{
+			dataset = CSVFileReader.read("src\\jghandin\\Data_Mining_Student_DataSet_Spring_2013.csv", false);
+			
+			// Formats the date of birth
+			dataset = DataTransformation.formatDateOfBirth(dataset);
+			
+			 // Trims the prog_skill column
+			dataset = DataTransformation.trimToFirstInt(dataset, EColumns.prog_skill.ordinal(), 0);
+			// Trims the yrs_of_uni_study column
+			dataset = DataTransformation.trimToFirstInt(dataset, EColumns.yrs_of_uni_study.ordinal(), 0); 
+			// Trims the solar_system_planets column
+			dataset = DataTransformation.trimToFirstInt(dataset, EColumns.solar_system_planets.ordinal(), 0); 
 
-		// Makes sure that "Fibonacci" is spelled correctly if it was written in the cell.
-		dataset = Cleaner.trimToString(dataset, 25, "Fibo", "Fibonacci"); 
+			// Makes sure that "Fibonacci" is spelled correctly if it was written in the cell.
+			dataset = DataTransformation.trimToString(dataset, EColumns.seq_name.ordinal(), "Fibo", "Fibonacci"); 
+			
+			// Normalizes the values for age, DOB, prog_skill and yrs_of_uni_study
+			DataTransformation.normalizeColumn(dataset, EColumns.age.ordinal(), 20, 0);
+			DataTransformation.normalizeColumn(dataset, EColumns.DOB.ordinal(), 20, 0);
+			DataTransformation.normalizeColumn(dataset, EColumns.prog_skill.ordinal(), 20, 0);
+			DataTransformation.normalizeColumn(dataset, EColumns.yrs_of_uni_study.ordinal(), 20, 0);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 		
-		// Fill in seq_name column with "Don't know"
-		dataset = Cleaner.fillInValues(dataset, 25, "Don't know"); 
-		
-		// Fill in therb_fortt_glag with the median
-		dataset = Cleaner.fillInMedian(dataset, 22);
-		
+		return dataset;
+	}
+	
+	/**
+	 * Prints the dataset in a decent format
+	 * 
+	 * @param dataset The dataset
+	 */
+	@SuppressWarnings("unused")
+	private static void printDataset(String[][] dataset)
+	{
 		// Prints the dataset to the console
 		for (String[] line : dataset) 
 		{
@@ -77,7 +179,5 @@ public class Main
 			}
 			System.out.println("]");
 		}
-		
-		return dataset;
 	}
 }

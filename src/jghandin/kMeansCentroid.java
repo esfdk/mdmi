@@ -9,14 +9,14 @@ package jghandin;
 public class kMeansCentroid
 {
 	private int id;
-	private double age, dob, progSkill, uniStudy;
+	private double age, progSkill, uniStudy;
 	
 	/**
 	 * A centroid for the kMeans algorithm.
 	 */
 	public kMeansCentroid(int id)
 	{
-		this(id, 0.0, 0.0, 0.0, 0.0);
+		this(id, 0.0, 0.0, 0.0);
 	}
 	
 	/**
@@ -24,15 +24,13 @@ public class kMeansCentroid
 	 * 
 	 * @param id The id of the centroid
 	 * @param age The value for age
-	 * @param dob The value for dob
 	 * @param progSkill The value for progSkill
 	 * @param uniStudy The value for uniStudy
 	 */
-	public kMeansCentroid(int id, double age, double dob, double progSkill, double uniStudy)
+	public kMeansCentroid(int id, double age, double progSkill, double uniStudy)
 	{
 		this.id = id;
 		this.age = age;
-		this.dob = dob;
 		this.progSkill = progSkill;
 		this.uniStudy = uniStudy;
 	}
@@ -50,16 +48,6 @@ public class kMeansCentroid
 	public void setAge(double age)
 	{
 		this.age = age;
-	}
-
-	public double getDob()
-	{
-		return dob;
-	}
-
-	public void setDob(double dob)
-	{
-		this.dob = dob;
 	}
 
 	public double getProgSkill()
@@ -91,7 +79,6 @@ public class kMeansCentroid
 	@Override
 	public String toString()
 	{
-		return "kMeansCentroid [id=" + id + ", age=" + age + ", dob=" + dob
-				+ ", progSkill=" + progSkill + ", uniStudy=" + uniStudy + "]";
+		return "kMeansCentroid [id=" + id + ", age=" + age + ", progSkill=" + progSkill + ", uniStudy=" + uniStudy + "]";
 	}
 }

@@ -8,7 +8,7 @@ package jghandin;
  */
 public class kMeansDataPoint
 {
-	private int originalID, age, dob, progSkill, uniStudy, clusterId;
+	private int originalID, age, progSkill, uniStudy, clusterId;
 	
 	/**
 	 * A data point that holds data about a person. 
@@ -16,15 +16,13 @@ public class kMeansDataPoint
 	 * @param originalID The value for originalID. Is used to find the point in
 	 * 					 the original dataset, if necessary.
 	 * @param age The value for age
-	 * @param dob The value for dob
 	 * @param progSkill The value for progSkill
 	 * @param uniStudy The value for uniStudy
 	 */
-	public kMeansDataPoint(int originalID, int age, int dob, int progSkill, int uniStudy)
+	public kMeansDataPoint(int originalID, int age, int progSkill, int uniStudy)
 	{
 		this.originalID = originalID;
 		this.age = age;
-		this.dob = dob;
 		this.progSkill = progSkill;
 		this.uniStudy = uniStudy;
 	}
@@ -37,11 +35,6 @@ public class kMeansDataPoint
 	public int getAge()
 	{
 		return age;
-	}
-
-	public int getDob()
-	{
-		return dob;
 	}
 
 	public int getProgSkill()
@@ -89,7 +82,6 @@ public class kMeansDataPoint
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + age;
-		result = prime * result + dob;
 		result = prime * result + originalID;
 		result = prime * result + progSkill;
 		result = prime * result + uniStudy;
@@ -114,8 +106,6 @@ public class kMeansDataPoint
 			return false;
 		kMeansDataPoint other = (kMeansDataPoint) obj;
 		if (age != other.age)
-			return false;
-		if (dob != other.dob)
 			return false;
 		if (originalID != other.originalID)
 			return false;

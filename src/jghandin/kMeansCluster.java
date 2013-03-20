@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 /**
  * A class that represents a cluster.
- * No comments on getters/setters, as it's not necessary
  * 
  * @author Jacob Grooss (jcgr@itu.dk)
  */
 public class kMeansCluster
 {
 	private ArrayList<kMeansDataPoint> clusterPoints;
+
 	private kMeansCentroid centroid;
 	
 	/**
@@ -36,20 +36,18 @@ public class kMeansCluster
 			return;
 		}
 		
-		double meanAge = 0, meanDob = 0, meanProgSkill = 0, meanUniStudy = 0;
+		double meanAge = 0, meanProgSkill = 0, meanUniStudy = 0;
 		
 		// Finds the total value of all data points in the cluster for each category
 		for (kMeansDataPoint dp : this.clusterPoints)
 		{
 			meanAge += dp.getAge();
-			meanDob += dp.getDob();
 			meanProgSkill += dp.getProgSkill();
 			meanUniStudy += dp.getUniStudy();
 		}
 		
 		// Sets the value of the centroid to the new values
 		this.centroid.setAge(meanAge / this.clusterPoints.size());
-		this.centroid.setDob(meanDob / this.clusterPoints.size());
 		this.centroid.setProgSkill(meanProgSkill / this.clusterPoints.size());
 		this.centroid.setUniStudy(meanUniStudy / this.clusterPoints.size());
 	}
@@ -79,17 +77,31 @@ public class kMeansCluster
 		dp.setClusterId(-1);
 		this.RecalculateCentroid();
 	}
-
-	public int getId()
+	
+	/**
+	 * @return the clusterPoints
+	 */
+	public ArrayList<kMeansDataPoint> getClusterPoints()
 	{
-		return this.centroid.getId();
+		return clusterPoints;
 	}
 	
+	/**
+	 * @return the centroid
+	 */
 	public kMeansCentroid getCentroid()
 	{
 		return centroid;
 	}
 	
+	/**
+	 * @return the Id
+	 */
+	public int getId()
+	{
+		return centroid.getId();
+	}
+
 	/**
 	 * Auto-generated toString
 	 * 

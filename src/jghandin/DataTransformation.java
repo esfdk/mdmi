@@ -7,10 +7,85 @@ import java.util.Scanner;
 
 /**
  * Used to clean a array of string array dataset
+ * 
  * @author Jacob Grooss
  */
-public class Cleaner
+public class DataTransformation
 {	
+	
+	/**
+	 * Discretizes a column in the dataset with the given intervals
+	 * 
+	 * @param dataset The dataset
+	 * @param intervals The list of intervals
+	 * @param column The column to discretize
+	 * @return The updated dataset
+	 */
+	public static String[][] discretizeColumn(String[][] dataset, ArrayList<Pair<Integer, Integer>> intervals, int column)
+	{
+		for (int i = 0; i < dataset.length; i++)
+		{
+			dataset[i][column] = "" + findInterval(intervals, convertToInt(dataset[i][column]));
+		}
+		
+		return dataset;
+	}
+	
+	/**
+	 * Finds the interval the value belongs to and returns the lowest value for the interval
+	 * 
+	 * @param intervals The list of itnervals
+	 * @param valueToCheck The value to check
+	 * @return The lowest value of the interval valueToCheck fits in or -1 if not in an interval
+	 */
+	private static int findInterval(ArrayList<Pair<Integer, Integer>> intervals, int valueToCheck)
+	{
+		for (Pair<Integer, Integer> interval : intervals)
+		{
+			if (valueToCheck >= interval.left && valueToCheck <= interval.right)
+			{
+				return interval.left;
+			}
+		}
+		
+		return -1;
+	}
+	
+	/**
+	 * Normalizes values in a given column to int values.
+	 * 
+	 * @param dataset The dataset
+	 * @param column The column to normalize
+	 * @return The updated dataset
+	 */
+	public static String[][] normalizeColumn(String[][] dataset, int column, int rangeMax, int rangeMin)
+	{
+		int[] numbers = new int[dataset.length];				
+		int maximum = 0, minimum = 10000000;
+		
+		// Loads all numbers for the column and finds the highest/lowest values.
+		for (int i = 0; i < numbers.length; i++)
+		{
+			int tempNumber = convertToInt(dataset[i][column]);
+			numbers[i] = tempNumber;
+			
+			if (tempNumber > maximum) maximum = tempNumber;
+			if (tempNumber < minimum) minimum = tempNumber;
+		}
+		
+		// Normalizes all the values and inserts them in the dataset
+		for (int i = 0; i < numbers.length; i++)
+		{
+			double normalValue;
+			normalValue = (numbers[i] - minimum);
+			normalValue = normalValue / (maximum - minimum);
+			normalValue = normalValue * (rangeMax - rangeMin);
+			normalValue = normalValue + rangeMin;
+			dataset[i][column] = "" + (int)normalValue;
+		}
+		
+		return dataset;
+	}
 	
 	/**
 	 * Finds the first int value in a string in the set and replaces the string with the int.
@@ -80,7 +155,7 @@ public class Cleaner
 	 * @param dataset The dataset
 	 * @return The updated dataset
 	 */
-	private static String[][] formatDateOfBirth(String[][] dataset)
+	public static String[][] formatDateOfBirth(String[][] dataset)
 	{
 		// The date of birth column is #2, so it's a static variable
 		int dobColumn = 2;
@@ -109,7 +184,7 @@ public class Cleaner
 					dataset[i][dobColumn] = "20" + birth;
 				}
 			}
-			// If it isn't possible to parse the string to an int...
+			// If it isn't possible to parse the string to an int
 			catch (NumberFormatException e)
 			{
 				int birth = 0;
@@ -128,38 +203,6 @@ public class Cleaner
 				// Set the cell to the current year - age.
 				int date = Calendar.getInstance().get(Calendar.YEAR) - birth;
 				dataset[i][dobColumn] = "" + date;
-			}
-		}
-		
-		return dataset;
-	}
-	
-	/**
-	 * Formats the date of birth to show only the year and fills missing
-	 * age values based on the date of birth.
-	 *  
-	 * @param dataset The dataset
-	 * @return The updated dataset
-	 */
-	public static String[][] fixBirthAndAge(String[][] dataset)
-	{
-		// Calls formatDateOfBirth to ensure we have the right years.
-		dataset = formatDateOfBirth(dataset);
-		
-		// The age is in column #1
-		int ageColumn = 1;
-		
-		// Interate over all the rows in the dataset
-		for(int i = 0; i < dataset.length; i++)
-		{
-			// If an age cell is empty...
-			if(dataset[i][ageColumn].equals(" "))
-			{
-				// ... get the year from the dob cell next to and subtract it from the current year.
-				// Normally I'd have to do a try/catch because of parseInt, but with this dataset,
-				// I know that an exception won't be thrown.
-				int dob = Integer.parseInt(dataset[i][ageColumn + 1]);
-				dataset[i][ageColumn] = "" + (Calendar.getInstance().get(Calendar.YEAR) - dob);
 			}
 		}
 		
@@ -242,5 +285,27 @@ public class Cleaner
 		fillInValues(dataset, columnToFill, valueToFill);
 		
 		return dataset;
+	}
+	
+	/**
+	 * Converts a string to an int or returns 0
+	 * 
+	 * @param toConvert The string to convert
+	 * @return The int or 0
+	 */
+	public static int convertToInt(String toConvert)
+	{
+		int result;
+		
+		try
+		{
+			result = Integer.parseInt(toConvert);
+		}
+		catch (NumberFormatException e)
+		{
+			result = 0;
+		}
+		
+		return result;
 	}
 }
