@@ -1,9 +1,7 @@
 package jmhandin.preprocessing;
 
 import java.awt.Color;
-import java.util.ArrayList;
-
-import lab_2.Pair;
+import java.util.HashMap;
 
 /**
  * Contains static methods for filling in missing values in different ways.
@@ -41,39 +39,44 @@ public class MissingValues {
 	 */
 	public static String[][] fillInMedian(String[][] dataSet, int columnToFill)
 	{
-		// Used to keep track of the number of times a value appears in a column
-		ArrayList<Pair<String, Integer>> timesSeen = new ArrayList<Pair<String, Integer>>();
+		// Hash map to keep track of the number of times an item has been seen
+		HashMap<String, Integer> timesSeen = new HashMap<String, Integer>(); 
 		
+		// Iterate over the column in the set to see the number of times an item is seen
 		for(int i = 0; i < dataSet.length; i++)
 		{
-			// Finds the index of the pair containing the value in the column. 
-			int index = Pair.indexOfAPair(timesSeen, dataSet[i][columnToFill].toLowerCase().trim());
+			// Lower case and trim to make sure the "same" values are considered the same
+			String key = dataSet[i][columnToFill].toLowerCase().trim();
 			
-			if(index >= 0) // If the value has been seen before, increase the number of times it has been seen. 
+			// Do not fill in missing with empty value
+			if(key.equals(" ") || key.equals("")) continue;
+			
+			// If key has already been seen, add 1 to the value of the key otherwise put it into the map
+			if(timesSeen.containsKey(key))
 			{
-				Pair<String, Integer> oldPair = timesSeen.get(index);
-				Pair<String, Integer> newPair = new Pair<String, Integer>(oldPair.left, oldPair.right + 1);
-				timesSeen.set(index, newPair);
+				timesSeen.put(key, timesSeen.get(key) + 1);
 			}
-			else // Add the value to list of items seen.
+			else
 			{
-				Pair<String, Integer> newPair = new Pair<String, Integer>(dataSet[i][columnToFill].toLowerCase().trim(), 1);
-				timesSeen.add(newPair);
+				timesSeen.put(key, 1);
 			}
 		}
 		
-		int a = 0;
+		int mostSeen = 0;
 		String valueToFill = "";
 		
-		for(Pair<String, Integer> p : timesSeen) // Iterates over the list to find the value that appeared most often.  
+		// Iterate over the keys in the map 
+		for(String currentKey : timesSeen.keySet())
 		{
-			if(p.right > a && !p.left.equals(" ")) // Checks if value is empty and if it appeared the most times.
+			// If the key is seen more time than the previously most seen, update mostSeen and valueToFill
+			if(timesSeen.get(currentKey) > mostSeen)
 			{
-				valueToFill = p.left;
-				a = p.right;
+				valueToFill = currentKey;
+				mostSeen = timesSeen.get(currentKey);
 			}
 		}
-		
+				
+		// Fills in the newly found median
 		fillInValues(dataSet, columnToFill, valueToFill);
 		return dataSet;
 	}
