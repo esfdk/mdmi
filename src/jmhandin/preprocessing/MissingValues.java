@@ -1,6 +1,5 @@
 package jmhandin.preprocessing;
 
-import java.awt.Color;
 import java.util.HashMap;
 
 /**
@@ -78,35 +77,6 @@ public class MissingValues {
 				
 		// Fills in the newly found median
 		fillInValues(dataSet, columnToFill, valueToFill);
-		return dataSet;
-	}
-	
-	/**
-	 * Checks if a string is a colour.
-	 * 
-	 * @param colorAsString The string to be checked for a colour.
-	 * @return True if string contains a colour recognised by java else false.
-	 */
-	private static boolean isColor(String colorAsString)
-	{
-		if (colorAsString == null) // If string is null, it is not a colour.
-		{
-			return false;
-		}
-		try 
-		{
-			Color.class.getField(colorAsString); // Get colour from value using reflection
-			return true;
-		} catch (Exception ce) 
-		{
-			return false;  // If it is not a colour
-		}
-	}
-	
-	public static String[][] checkColorColumn(String[][] dataSet, int column)
-	{
-		// TODO: Implement checkColorColumn
-		
 		return dataSet;
 	}
 }

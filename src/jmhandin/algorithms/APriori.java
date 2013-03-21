@@ -2,19 +2,32 @@ package jmhandin.algorithms;
 
 import java.util.*;
 
+import jmhandin.other.Attributes;
+
+/** 
+ * A Priori algorithm for frequent patterns in the 3 random numbers and favourite colour. 
+ *  
+ * @author Jakob Melnyk, jmel@itu.dk
+ */
 public class APriori {
-	
-	private static void aprioriAlgorithm(String[][] dataSet, int min_support)
+	/**
+	 * 
+	 * @param dataSet
+	 * @param min_support
+	 * @return
+	 */
+	public static List<List<String>> aprioriAlgorithm(String[][] dataSet, int min_support)
 	{
-		HashMap<Integer, List<List<String>>> frequentItemSets= new HashMap<Integer, List<List<String>>>();
+		HashMap<Integer, List<List<String>>> frequentItemSets = new HashMap<Integer, List<List<String>>>();
 		
 		List<List<String>> convertedDataSet = convertDataSet(dataSet);
 		
 		// Step (1)
-		frequentItemSets.put(1, findFrequentOneItemsets(convertedDataSet));
+		frequentItemSets.put(1, findFrequentOneItemsets(convertedDataSet, min_support));
+		
 		
 		// Step (2)
-		for(int k = 2; frequentItemSets.get(k - 1).size() != 0; k++)
+		for(int k = 2; (frequentItemSets.get(k - 1).size() != 0); k++)
 		{
 			// Step (3)
 			List<List<String>> candidateSet = aprioriGen(frequentItemSets.get(k-1)); 
@@ -25,7 +38,7 @@ public class APriori {
 			for(int i = 0; i < convertedDataSet.size(); i++)
 			{
 				// Step (5)
-				List<List<String>> candidateSubsets = subset(candidateSet, convertedDataSet.get(0));
+				List<List<String>> candidateSubsets = subset(candidateSet, convertedDataSet.get(i));
 				
 				// Step (6)
 				for(List<String> candidateSubset : candidateSubsets)
@@ -37,42 +50,378 @@ public class APriori {
 					}
 					else
 					{
-						candidateTimesSeen.put(candidateSubset, 0);
+						candidateTimesSeen.put(candidateSubset, 1);
 					}
 				}
 			}
 			
+			List<List<String>> kFrequentSet = new ArrayList<List<String>>();
+			
 			// Step (9)
-			for()
+			for(List<String> candidate : candidateTimesSeen.keySet())
 			{
-				frequentItemSets.put(k, );
+				if(candidateTimesSeen.get(candidate) >= min_support)
+				{
+					kFrequentSet.add(candidate);
+				}
 			}
+			
+			frequentItemSets.put(k, kFrequentSet);
 		}
+		
+		return frequentItemSets.get(4);
 	}
 	
+	/**
+	 * Generates a list of supersets from the frequent item sets that contain no infrequent subsets
+	 * 
+	 * @param frequentItemSet All the item sets in this set must be of the same size.
+	 * @return The list of generated sets that contain no infrequent subsets
+	 */
 	private static List<List<String>> aprioriGen(List<List<String>> frequentItemSet)
 	{
-		return frequentItemSet;
-	}
-	
-	private static List<List<String>> findFrequentOneItemsets(List<List<String>> dataSet) 
-	{
+		List<List<String>> cK = new ArrayList<List<String>>();
+		// Step (1)
+		for(List<String> lone : frequentItemSet)
+		{
+			// Step (2)
+			for(List<String> ltwo : frequentItemSet)
+			{
+				List<String> c = new ArrayList<String>(); 
+				
+				// Step (3a)
+				boolean shouldJoin = true;
+				if(lone.size() == 1 && lone.get(0) != ltwo.get(0))
+				{
+					c.add(lone.get(0));
+					c.add(ltwo.get(0));
+				}
+				else
+				{
+					for(int i = 0; i < ltwo.size() - 1; i ++)
+					{
+						if(!lone.get(i).equals(ltwo.get(i)))
+						{
+							shouldJoin = false; break;
+						}
+					}
+					
+					// Step (3b)
+					int size = lone.size();
+					if(shouldJoin && !(lone.get(size - 1).equals(ltwo.get(size - 1))))
+					{
+						// Step (4)
+						for(int j = 0; j < size; j++)
+						{
+							c.add(lone.get(j));
+						}
+						
+						c.add(ltwo.get(size-1));
+					}
+				}
+				
+				boolean cIsDuplicate = false;
+				for(List<String> set : cK)
+				{
+					// Step (5)
+					if(areSetsEqual(c, set))
+					{
+						cIsDuplicate = true;
+						break;
+					}
+				}
+				
+				// Step (6) omitted
+				if(!cIsDuplicate && !hasInfrequentSubset(c, frequentItemSet) && c.size() != 0)
+				{
+					// Step (7)
+					cK.add(c);
+				}
+			}
+		}
 		
-		return new ArrayList<List<String>>();
+		// Step (9)
+		return cK;
 	}
 	
-	private static boolean hasInfrequentSubset()
+	/**
+	 * Finds the set of frequent one items.
+	 * 
+	 * @param dataSet The data set to look through.
+	 * @param min_support The minimum number of instances that must be present for the item to be frequent.
+	 * @return The list of frequent one item sets
+	 */
+	private static List<List<String>> findFrequentOneItemsets(List<List<String>> dataSet, int min_support) 
 	{
-		return true;
+		HashMap<String, Integer> timesSeen = new HashMap<String, Integer>();
+		
+		for(List<String> tuple : dataSet)
+		{
+			// Random_number_1_10
+			if(timesSeen.containsKey(tuple.get(0)))
+			{
+				timesSeen.put(tuple.get(0), timesSeen.get(tuple.get(0)) + 1); 
+			}
+			else
+			{
+				timesSeen.put(tuple.get(0), 1);
+			}
+			// Random_number_0_1A
+			if(timesSeen.containsKey(tuple.get(1)))
+			{
+				timesSeen.put(tuple.get(1), timesSeen.get(tuple.get(1)) + 1); 
+			}
+			else
+			{
+				timesSeen.put(tuple.get(1), 1);
+			}
+			// Random_number_0_1B
+			if(timesSeen.containsKey(tuple.get(2)))
+			{
+				timesSeen.put(tuple.get(2), timesSeen.get(tuple.get(2)) + 1); 
+			}
+			else
+			{
+				timesSeen.put(tuple.get(2), 1);
+			}
+			// Colour
+			if(timesSeen.containsKey(tuple.get(3)))
+			{
+				timesSeen.put(tuple.get(3), timesSeen.get(tuple.get(3)) + 1); 
+			}
+			else
+			{
+				timesSeen.put(tuple.get(3), 1);
+			}
+			
+		}
+		
+		List<List<String>> oneItemSets = new ArrayList<List<String>>();
+		for(String item : timesSeen.keySet())
+		{
+			if(timesSeen.get(item) >= min_support) 
+			{
+				ArrayList<String> al = new ArrayList<String>();
+				al.add(item);
+				oneItemSets.add(al);
+			}
+		}
+		
+		return oneItemSets;
+	}
+
+	/**
+	 * Checks if a a set has a subset that is not contained in the frequent k-1 size subsets
+	 * 
+	 * @param kCandidateSet The set to check.
+	 * @param frequentKMinusOneSet The frequent k-1 subsets
+	 * @return True if there is a infrequent subset, else false.
+	 */
+	private static boolean hasInfrequentSubset(List<String> kCandidateSet, List<List<String>> frequentKMinusOneSet)
+	{
+		// Step (1)
+		for(List<String> s : kMinusOneSets(kCandidateSet))
+		{
+			// Step (2)
+			if(!isFrequentSet(s, frequentKMinusOneSet))
+			{
+				// Step (3)
+				return true;
+			}
+		}
+		// Step (4)
+		return false;
 	}
 	
+	/**
+	 * Finds the list of sets in the candidate set that are in the tuple.
+	 * 
+	 * @param candidateSet The set of item sets to compare to the tuple.
+	 * @param tuple The tuple from the database
+	 * @return The list of sets that are in the tuple
+	 */
 	private static List<List<String>> subset(List<List<String>> candidateSet, List<String> tuple)
 	{
-		return candidateSet;
+		List<List<String>> subset = new ArrayList<List<String>>();
+		
+		for(List<String> ct : candidateSet)
+		{
+			// 4-set candidate
+			if(ct.size() == 4)
+			{
+				String a = ct.get(0); 
+				if(a.equals(tuple.get(0)) || a.equals(tuple.get(1)) || a.equals(tuple.get(2)) || a.equals(tuple.get(3)))
+				{
+					String b = ct.get(1);
+					if(b.equals(tuple.get(0)) || b.equals(tuple.get(1)) || b.equals(tuple.get(2)) || b.equals(tuple.get(3)))
+					{
+						String c = ct.get(1);
+						if(c.equals(tuple.get(0)) || c.equals(tuple.get(1)) || c.equals(tuple.get(2)) || c.equals(tuple.get(3)))
+						{
+							String d = ct.get(1);
+							if(d.equals(tuple.get(0)) || d.equals(tuple.get(1)) || d.equals(tuple.get(2)) || d.equals(tuple.get(3)))
+							{
+								subset.add(ct);
+							}
+						}
+					}
+				}
+			}
+			// 3-set candidate
+			else if(ct.size() == 3)
+			{
+				String a = ct.get(0); 
+				if(a.equals(tuple.get(0)) || a.equals(tuple.get(1)) || a.equals(tuple.get(2)) || a.equals(tuple.get(3)))
+				{
+					String b = ct.get(1);
+					if(b.equals(tuple.get(0)) || b.equals(tuple.get(1)) || b.equals(tuple.get(2)) || b.equals(tuple.get(3)))
+					{
+						String c = ct.get(1);
+						if(c.equals(tuple.get(0)) || c.equals(tuple.get(1)) || c.equals(tuple.get(2)) || c.equals(tuple.get(3)))
+						{
+							subset.add(ct);
+						}
+					}
+				}
+			}
+			// 2-set candidate
+			else if(ct.size() == 2)
+			{
+				String a = ct.get(0); 
+				if(a.equals(tuple.get(0)) || a.equals(tuple.get(1)) || a.equals(tuple.get(2)) || a.equals(tuple.get(3)))
+				{
+					String b = ct.get(1);
+					if(b.equals(tuple.get(0)) || b.equals(tuple.get(1)) || b.equals(tuple.get(2)) || b.equals(tuple.get(3)))
+					{
+						subset.add(ct);
+					}
+				}
+			}
+			else if(ct.size() == 1)
+			{
+				String a = ct.get(1);
+				if(a.equals(tuple.get(0)) || a.equals(tuple.get(1)) || a.equals(tuple.get(2)) || a.equals(tuple.get(3)))
+				{
+					subset.add(ct);
+				}
+			}
+		}
+		
+		return subset;
 	}
 	
-	private static List<List<String>> convertDataSet(String[][] dataSet)
+	/** 
+	 * Removes the elements not to be considered by the A Priori algorithm and 
+	 * creates a new data set containing only the random numbers and the favourite colour.
+	 * 
+	 * @param dataSet The original data set filled from the "Data Mining, Spring 2013:Data Collection Questionnaire"
+	 * @return A converted data set containing only the values used to find a frequent pattern in random numbers and colour
+	 */
+	public static List<List<String>> convertDataSet(String[][] dataSet)
 	{
-		return new ArrayList<List<String>>();
+		 List<List<String>> convertedDataSet = new ArrayList<List<String>>();
+		 
+		 /* For every tuple in the data set, 
+		  * create a new tuple containing only the values for the 4 attributes:
+		  * Random_1_10, Random_0_1_A, Random_0_1_B & Colour
+		  */
+		 for(String[] tuple : dataSet)
+		 {
+			 List<String> newTuple = new ArrayList<String>();
+			 newTuple.add(tuple[Attributes.RAND_1_10.ordinal()]);
+			 newTuple.add(tuple[Attributes.RAND_0_1_A.ordinal()]);
+			 newTuple.add(tuple[Attributes.RAND_0_1_B.ordinal()]);
+			 newTuple.add(tuple[Attributes.COLOUR.ordinal()]);
+			 convertedDataSet.add(newTuple);
+		 }
+		
+		 return convertedDataSet;	
+	}
+
+	/**
+	 * Finds the set of k-1 item sets.
+	 * 
+	 * @param kSet The k-set of items to get k-1 subsets from.
+	 * @return The list of k-1 sets
+	 */
+	private static List<List<String>> kMinusOneSets(List<String> kSet)
+	{
+		List<List<String>> kMinusOneSets = new ArrayList<List<String>>();
+		
+		if(kSet.size() == 4)
+		{
+			kMinusOneSets.add(kSet.subList(0, 3)); // Three-set of item 1, item 2 and item 3
+			kMinusOneSets.add(kSet.subList(1, 4)); // Three-set of item 2, item 3 and item 4
+			List<String> oneTwoFour = new ArrayList<String>();
+			oneTwoFour.add(kSet.get(0));
+			oneTwoFour.add(kSet.get(1));
+			oneTwoFour.add(kSet.get(3));
+			kMinusOneSets.add(oneTwoFour); // Three-set of item 1, item 2 and item 4
+			
+			List<String> oneThreeFour = new ArrayList<String>();
+			oneThreeFour.add(kSet.get(0));
+			oneThreeFour.add(kSet.get(2));
+			oneThreeFour.add(kSet.get(3));
+			kMinusOneSets.add(oneThreeFour); // Three-set of item 1, item 2 and item 3
+		}
+		else if(kSet.size() == 3)
+		{
+			kMinusOneSets.add(kSet.subList(0, 2)); // Two-set of item 1 and item 2
+			kMinusOneSets.add(kSet.subList(1, 3)); // Two-set of item 2 and item 3
+			
+			List<String> oneThree = new ArrayList<String>();
+			oneThree.add(kSet.get(0));
+			oneThree.add(kSet.get(2));
+			kMinusOneSets.add(oneThree); // Two-set of item 1 and item 3
+		}
+		else if(kSet.size() == 2)
+		{
+			kMinusOneSets.add(kSet.subList(0, 1)); // Item 1
+			kMinusOneSets.add(kSet.subList(1, 2)); // Item 2
+		}
+				
+		return kMinusOneSets;
+	}
+
+	/**
+	 * Checks if a candidate is contained in the list given.
+	 * 
+	 * @param candidate The list to look for
+	 * @param frequentItemSets The list of sets to look through.
+	 * @return True if contained, otherwise false.
+	 */
+	private static boolean isFrequentSet(List<String> candidate, List<List<String>> frequentItemSets)
+	{
+		for(List<String> frequentItemSet : frequentItemSets)
+		{
+			if(areSetsEqual(candidate, frequentItemSet))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * If there are an equal amount of items in both sets and every string in a is contained in b, the sets are equal.
+	 * 
+	 * @param a First list.
+	 * @param b Second list.
+	 * @return True if sets are equal, false if not.
+	 */
+	private static boolean areSetsEqual(List<String> a, List<String> b)
+	{
+		if(a.size() != b.size()) return false; 
+		boolean equal = true;
+		for(String s : a)
+		{
+			if(!b.contains(s)) 
+			{
+				equal = false; 
+				break;
+			}
+		}
+		return equal;
 	}
 }
