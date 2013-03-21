@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Split the people into clusters based on DoB, Year, Uni study and Prog Skill. 
+ * Split the people into clusters based on age, Uni study and Prog Skill. 
  * Which groups scores better on the three last questions?
- * Can one predict what a given group will answer, based on the clusters?
+ * 
+ * When using kNN, is there a difference in the answers when normalizing the 
+ * dataset versus discretizing it?
  * 
  * @author Jacob
  */
@@ -19,19 +21,45 @@ public class Main
 	{
 		kMeans km = new kMeans();
 		String[][] dataset = null;
-		kNearestNeighbor knn = new kNearestNeighbor();
 				
 		dataset = kMeansLoadAndCleanDataset();
 		km.clusterData(dataset, 3);
 		km.printCorrectAnswers(dataset, km.getClusters());
+		
+		runKNN(dataset, 1, 5);
+		runKNN(dataset, 7, 5);
+		runKNN(dataset, 16, 5);
+		runKNN(dataset, 24, 5);
+		runKNN(dataset, 31, 5);
+	}
+	
+	/**
+	 * Runs kNN on the given dataset, person and with k neighbors for 
+	 * both normalized and discretized data, then prints the results. 
+	 * 
+	 * @param dataset The dataset
+	 * @param person The person
+	 * @param k The amount of neighbors
+	 */
+	private static void runKNN(String[][] dataset, int person, int k)
+	{
+		kNearestNeighbor knn = new kNearestNeighbor();
 
+		System.out.println("Person " + person);
+		System.out.println("Discretizing:");
 		dataset = loadAndCleanDatasetKNN();
 		dataset = discrentizeDatasetKNN(dataset);
-		knn.printResultsFor(dataset, 1, 5);
+		knn.printResultsFor(dataset, person, k);
 
+		System.out.println();
+		System.out.println("Normalizing:");
 		dataset = loadAndCleanDatasetKNN();
 		dataset = normalizeDatasetKNN(dataset);
-		knn.printResultsFor(dataset, 1, 5);
+		knn.printResultsFor(dataset, person, k);
+
+		System.out.println();
+		System.out.println("------");
+		System.out.println();
 	}
 	
 	/**

@@ -100,6 +100,7 @@ public class kNearestNeighbor
 	
 	public void printResultsFor(String[][] dataset, int person, int k)
 	{
+		String prediction = "";
 		ArrayList<Integer> trainingRows = new ArrayList<Integer>();
 		ArrayList<Integer> nearest = this.getKNearest(dataset, trainingRows, person, k);
 
@@ -109,17 +110,15 @@ public class kNearestNeighbor
 			trainingRows.add(i);
 		}
 		
-		boolean winterTired = this.wantMore(dataset, nearest, person, EColumns.winter_tired.ordinal(), "Yes");
-		System.out.println("Winter tired?");
-		System.out.println(dataset[person][0] + " is predicted to be tired of winter: " + winterTired);
-		System.out.println("Is " + dataset[person][0] + " tired of winter? " + dataset[person][EColumns.winter_tired.ordinal()]);
-		System.out.println();
-		
 		boolean moreMountains = this.wantMore(dataset, nearest, person, EColumns.more_dk_mnts.ordinal(), "Yes");
-		System.out.println("More mountains?");
-		System.out.println(dataset[person][0] + " is predicted to want more mountains: " + moreMountains);
+		prediction = moreMountains ? "Yes" : "No" ;
+		System.out.println(dataset[person][0] + " is predicted to want more mountains: " + prediction);
 		System.out.println("Does " + dataset[person][0] + " want more mountains? " + dataset[person][EColumns.more_dk_mnts.ordinal()]);
-		System.out.println();
+		
+		boolean winterTired = this.wantMore(dataset, nearest, person, EColumns.winter_tired.ordinal(), "Yes");
+		prediction = winterTired ? "Yes" : "No" ;
+		System.out.println(dataset[person][0] + " is predicted to be tired of winter: " + prediction);
+		System.out.println("Is " + dataset[person][0] + " tired of winter? " + dataset[person][EColumns.winter_tired.ordinal()]);
 	}
 	
 	/**

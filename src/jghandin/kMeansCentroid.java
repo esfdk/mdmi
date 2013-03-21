@@ -79,6 +79,6 @@ public class kMeansCentroid
 	@Override
 	public String toString()
 	{
-		return "kMeansCentroid [id=" + id + ", age=" + age + ", progSkill=" + progSkill + ", uniStudy=" + uniStudy + "]";
+		return "[centroid=" + id + ", age=" + age + ", progSkill=" + progSkill + ", uniStudy=" + uniStudy + "]";
 	}
 }

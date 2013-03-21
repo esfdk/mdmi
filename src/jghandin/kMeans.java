@@ -93,6 +93,8 @@ public class kMeans
 					+ getPercent(amountOfAnswers, clusterAnswer[3]) + "% correct");
 			System.out.println("   3. Sequence name:           " 
 					+ getPercent(amountOfAnswers, clusterAnswer[4]) + "% correct");
+			System.out.println("The centroid of the cluster is "
+					+ clusters.get(clusterAnswer[0]).getCentroid().toString());
 		}
 		
 		System.out.println();
