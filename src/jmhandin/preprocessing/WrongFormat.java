@@ -56,16 +56,20 @@ public class WrongFormat {
 	*/
 	public static String[][] trimToFirstDecimal(String[][] dataSet, int columnToTrim)
 	{
+		// Compile patterns - 3 different patterns are very ineffective, but works.
+		Pattern my_pattern_a = Pattern.compile("[0-9]+[,.][0-9]+");
+		Pattern my_pattern_b = Pattern.compile("[,.][0-9]+");
+		Pattern my_pattern_c = Pattern.compile("[0-9]+");
+		
 		for(int i = 0; i < dataSet.length; i++)
 		{
-			// Look for a decimal number
-			Pattern my_pattern_a = Pattern.compile("[0-9]+[,.][0-9]+");
-			Pattern my_pattern_b = Pattern.compile("[,.][0-9]+");
-			Pattern my_pattern_c = Pattern.compile("[0-9]+");
+			// Create matchers
 			Matcher a = my_pattern_a.matcher(dataSet[i][columnToTrim].trim());
 			Matcher b = my_pattern_b.matcher(dataSet[i][columnToTrim].trim()); 
 			Matcher c = my_pattern_c.matcher(dataSet[i][columnToTrim].trim());
-			if(a.find())
+			
+			// If first pattern matches, do this
+			if(a.find()) 
 			{
 				// Use locale that uses either comma or period as decimal character				
 				NumberFormat nf = NumberFormat.getInstance(Locale.US);
@@ -78,7 +82,7 @@ public class WrongFormat {
 				double number = 0;
 				try 
 				{
-					// Parse number as double
+					// Parse string as double
 					number = nf.parse(valAsString).doubleValue();
 				} catch (ParseException e1) 
 				{
@@ -87,45 +91,50 @@ public class WrongFormat {
 				
 				dataSet[i][columnToTrim] = "" + number;
 			}
+			// If second pattern matches, do this
 			else if(b.find())
-			{
-				// Use locale that uses either comma or period as decimal character
+			{	
+				// Use locale that uses either comma or period as decimal character				
 				NumberFormat nf = NumberFormat.getInstance(Locale.US);
 				String valAsString = dataSet[i][columnToTrim].trim().substring(b.start(), b.end());
 				if(valAsString.contains(","))
 				{
 					nf = NumberFormat.getInstance(Locale.GERMAN);
 				}
+
 				double number = 0;
 				try 
 				{
-					// Parse number as double
+					// Parse string as double
 					number = nf.parse(valAsString).doubleValue();
 				} catch (ParseException e1) 
 				{
 					e1.printStackTrace();
 				}
+				
 				dataSet[i][columnToTrim] = "" + number;
 			}
+			// If third pattern matches, do this.
 			else if(c.find())
 			{
-				// Use locale that uses either comma or period as decimal character
+				// Use locale that uses either comma or period as decimal character				
 				NumberFormat nf = NumberFormat.getInstance(Locale.US);
-				double number = 0;
 				String valAsString = dataSet[i][columnToTrim].trim().substring(c.start(), c.end());
 				if(valAsString.contains(","))
 				{
 					nf = NumberFormat.getInstance(Locale.GERMAN);
 				}
-				
+
+				double number = 0;
 				try 
 				{
-					// Parse number as double
+					// Parse string as double
 					number = nf.parse(valAsString).doubleValue();
 				} catch (ParseException e1) 
 				{
 					e1.printStackTrace();
 				}
+				
 				dataSet[i][columnToTrim] = "" + number;
 			}
 			else
@@ -216,6 +225,37 @@ public class WrongFormat {
 	}
 	
 	/**
+	 * Trims the programming language column to one language.
+	 * 
+	 * @param dataSet The data set to trim.
+	 * @param column The column to trim.
+	 * @return The updated data set.
+	 */
+	public static String[][] trimToOneLanguage(String[][] dataSet, int column)
+	{
+		for(int i = 0; i < dataSet.length; i++)
+		{
+			String s = dataSet[i][column];
+			int separator;
+			if(s.contains(","))
+			{
+				separator = s.indexOf(",");
+				s = s.substring(0, separator);
+			}
+			else
+			{
+				separator = s.indexOf(" ");
+				s = s.substring(0, separator);
+			}
+			
+			s.replace(" ", "");
+			dataSet[i][column] = s;
+		}
+		
+		return dataSet;
+	}
+			
+	/**
 	 * Checks if a string is a colour.
 	 * 
 	 * @param colorAsString The string to be checked for a colour.
@@ -236,6 +276,5 @@ public class WrongFormat {
 			return false;  // If it is not a colour
 		}
 	}
-	
-	
+
 }

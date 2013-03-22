@@ -125,7 +125,41 @@ public class Normalisation {
 			{
 				dataSet[i][columnToClassify] = "2nd-null";
 			}
-		}	
+		}
+		
+		return dataSet;
+	}
+	
+	/**
+	 * Classifies the column in the data set to "Windows", "MacOS", "*NIX" and "OS-null"
+	 * 
+	 * @param dataSet The data set to classify.
+	 * @param columnToClassify The column of the operating system to classify.
+	 * @return The updated data set.
+	 */
+	public static String[][] classifyOS(String[][] dataSet, int columnToClassify)
+	{
+		for(int i = 0; i < dataSet.length; i++)
+		{
+			String OSstring = dataSet[i][columnToClassify].toLowerCase().trim();
+			if(OSstring.contains("win"))
+			{
+				dataSet[i][columnToClassify] = "Windows";
+			}
+			else if(OSstring.contains("mac") || OSstring.contains("osx"))
+			{
+				dataSet[i][columnToClassify] = "MacOS";
+			}
+			else if(OSstring.contains("linux") || OSstring.contains("unix") || OSstring.contains("*nix") || OSstring.contains("ubuntu"))
+			{
+				dataSet[i][columnToClassify] = "*NIX";
+			}
+			else
+			{
+				dataSet[i][columnToClassify] = "OS-null";
+			}
+		}
+		
 		return dataSet;
 	}
 }
