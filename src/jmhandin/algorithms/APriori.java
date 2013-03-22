@@ -10,13 +10,15 @@ import jmhandin.other.Attributes;
  * @author Jakob Melnyk, jmel@itu.dk
  */
 public class APriori {
+	
 	/**
+	 * A Priori to find frequent patterns in random numbers and colour.
 	 * 
-	 * @param dataSet
-	 * @param min_support
-	 * @return
+	 * @param dataSet The data set to find frequent patterns in. 
+	 * @param min_support The minimum support of the pattern.
+	 * @return The frequent patterns of k sizes - key is 1...4
 	 */
-	public static List<List<String>> aprioriAlgorithm(String[][] dataSet, int min_support)
+	public static HashMap<Integer, List<List<String>>> aprioriAlgorithm(String[][] dataSet, int min_support)
 	{
 		HashMap<Integer, List<List<String>>> frequentItemSets = new HashMap<Integer, List<List<String>>>();
 		
@@ -57,7 +59,7 @@ public class APriori {
 			
 			List<List<String>> kFrequentSet = new ArrayList<List<String>>();
 			
-			// Step (9)
+			// Step (9) - every candidate set that has been seen more times than the minimum support is added to kfrequent set
 			for(List<String> candidate : candidateTimesSeen.keySet())
 			{
 				if(candidateTimesSeen.get(candidate) >= min_support)
@@ -69,7 +71,7 @@ public class APriori {
 			frequentItemSets.put(k, kFrequentSet);
 		}
 		
-		return frequentItemSets.get(4);
+		return frequentItemSets;
 	}
 	
 	/**
@@ -81,21 +83,24 @@ public class APriori {
 	private static List<List<String>> aprioriGen(List<List<String>> frequentItemSet)
 	{
 		List<List<String>> cK = new ArrayList<List<String>>();
-		// Step (1)
+		// Step (1) - every l1 set
 		for(List<String> lone : frequentItemSet)
 		{
-			// Step (2)
+			// Step (2) - every l2 set
 			for(List<String> ltwo : frequentItemSet)
 			{
 				List<String> c = new ArrayList<String>(); 
 				
 				// Step (3a)
 				boolean shouldJoin = true;
+				
+				// If size of frequent item set is 1, then join as long as items are not equal
 				if(lone.size() == 1 && lone.get(0) != ltwo.get(0))
 				{
 					c.add(lone.get(0));
 					c.add(ltwo.get(0));
 				}
+				// If not, check if all items are equal except last item in set
 				else
 				{
 					for(int i = 0; i < ltwo.size() - 1; i ++)
@@ -107,6 +112,7 @@ public class APriori {
 					}
 					
 					// Step (3b)
+					// Join sets if they should be joined
 					int size = lone.size();
 					if(shouldJoin && !(lone.get(size - 1).equals(ltwo.get(size - 1))))
 					{
@@ -120,6 +126,7 @@ public class APriori {
 					}
 				}
 				
+				// If set is previously seen in the candidate sets, then it is duplicate and should not be copied.
 				boolean cIsDuplicate = false;
 				for(List<String> set : cK)
 				{
@@ -132,9 +139,10 @@ public class APriori {
 				}
 				
 				// Step (6) omitted
+				// Step (7) - if not a duplicate, does not have infrequent subsets and is not of size 0 then add to candidate sets
 				if(!cIsDuplicate && !hasInfrequentSubset(c, frequentItemSet) && c.size() != 0)
 				{
-					// Step (7)
+					
 					cK.add(c);
 				}
 			}
@@ -157,6 +165,11 @@ public class APriori {
 		
 		for(List<String> tuple : dataSet)
 		{
+			/* 
+			 * Go through the 4 attributes: random number 1-10, random number 0-1, random number 0-1-again and colour
+			 * Count the number of times they have been seen.
+			 */
+			
 			// Random_number_1_10
 			if(timesSeen.containsKey(tuple.get(0)))
 			{
@@ -196,6 +209,7 @@ public class APriori {
 			
 		}
 		
+		// Every item seen more than the minimum support is added to the one item sets.
 		List<List<String>> oneItemSets = new ArrayList<List<String>>();
 		for(String item : timesSeen.keySet())
 		{
@@ -219,10 +233,10 @@ public class APriori {
 	 */
 	private static boolean hasInfrequentSubset(List<String> kCandidateSet, List<List<String>> frequentKMinusOneSet)
 	{
-		// Step (1)
+		// Step (1) - Go through all k-1 subsets of the kCandidateSet
 		for(List<String> s : kMinusOneSets(kCandidateSet))
 		{
-			// Step (2)
+			// Step (2) - If a set is not in set of frequent k-1 sets, then the candidate set has an infrequent subset.
 			if(!isFrequentSet(s, frequentKMinusOneSet))
 			{
 				// Step (3)
@@ -246,64 +260,20 @@ public class APriori {
 		
 		for(List<String> ct : candidateSet)
 		{
-			// 4-set candidate
-			if(ct.size() == 4)
+			// If every item of the candidate is contained in the tuple, then it is a subset
+			boolean isSubset = true;
+			for(String c : ct)
 			{
-				String a = ct.get(0); 
-				if(a.equals(tuple.get(0)) || a.equals(tuple.get(1)) || a.equals(tuple.get(2)) || a.equals(tuple.get(3)))
+				if(!tuple.contains(c))
 				{
-					String b = ct.get(1);
-					if(b.equals(tuple.get(0)) || b.equals(tuple.get(1)) || b.equals(tuple.get(2)) || b.equals(tuple.get(3)))
-					{
-						String c = ct.get(1);
-						if(c.equals(tuple.get(0)) || c.equals(tuple.get(1)) || c.equals(tuple.get(2)) || c.equals(tuple.get(3)))
-						{
-							String d = ct.get(1);
-							if(d.equals(tuple.get(0)) || d.equals(tuple.get(1)) || d.equals(tuple.get(2)) || d.equals(tuple.get(3)))
-							{
-								subset.add(ct);
-							}
-						}
-					}
+					isSubset = false; 
+					break;
 				}
 			}
-			// 3-set candidate
-			else if(ct.size() == 3)
+			
+			if(isSubset)
 			{
-				String a = ct.get(0); 
-				if(a.equals(tuple.get(0)) || a.equals(tuple.get(1)) || a.equals(tuple.get(2)) || a.equals(tuple.get(3)))
-				{
-					String b = ct.get(1);
-					if(b.equals(tuple.get(0)) || b.equals(tuple.get(1)) || b.equals(tuple.get(2)) || b.equals(tuple.get(3)))
-					{
-						String c = ct.get(1);
-						if(c.equals(tuple.get(0)) || c.equals(tuple.get(1)) || c.equals(tuple.get(2)) || c.equals(tuple.get(3)))
-						{
-							subset.add(ct);
-						}
-					}
-				}
-			}
-			// 2-set candidate
-			else if(ct.size() == 2)
-			{
-				String a = ct.get(0); 
-				if(a.equals(tuple.get(0)) || a.equals(tuple.get(1)) || a.equals(tuple.get(2)) || a.equals(tuple.get(3)))
-				{
-					String b = ct.get(1);
-					if(b.equals(tuple.get(0)) || b.equals(tuple.get(1)) || b.equals(tuple.get(2)) || b.equals(tuple.get(3)))
-					{
-						subset.add(ct);
-					}
-				}
-			}
-			else if(ct.size() == 1)
-			{
-				String a = ct.get(1);
-				if(a.equals(tuple.get(0)) || a.equals(tuple.get(1)) || a.equals(tuple.get(2)) || a.equals(tuple.get(3)))
-				{
-					subset.add(ct);
-				}
+				subset.add(ct);
 			}
 		}
 		
@@ -317,7 +287,7 @@ public class APriori {
 	 * @param dataSet The original data set filled from the "Data Mining, Spring 2013:Data Collection Questionnaire"
 	 * @return A converted data set containing only the values used to find a frequent pattern in random numbers and colour
 	 */
-	public static List<List<String>> convertDataSet(String[][] dataSet)
+	private static List<List<String>> convertDataSet(String[][] dataSet)
 	{
 		 List<List<String>> convertedDataSet = new ArrayList<List<String>>();
 		 
@@ -394,6 +364,7 @@ public class APriori {
 	{
 		for(List<String> frequentItemSet : frequentItemSets)
 		{
+			// If set is equal to one frequent item set, then it is frequent.
 			if(areSetsEqual(candidate, frequentItemSet))
 			{
 				return true;
@@ -412,7 +383,10 @@ public class APriori {
 	 */
 	private static boolean areSetsEqual(List<String> a, List<String> b)
 	{
+		// If size is not equal, sets cannot be equal.
 		if(a.size() != b.size()) return false; 
+		
+		// If every element of a is contained in b, then sets are equal.
 		boolean equal = true;
 		for(String s : a)
 		{

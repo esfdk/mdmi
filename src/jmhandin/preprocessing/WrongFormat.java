@@ -9,6 +9,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jmhandin.other.Attributes;
+
 /**
  * Contains static methods for correcting the format of values in a data set.
  * 
@@ -18,6 +20,7 @@ public class WrongFormat {
 
 	/**
 	 * Finds the first integer value in a string in the set and replaces the string with a string containing only the integer.
+	 * Made in collaboration with Jacob Grooss, jcgr@itu.dk
 	 * 
 	 * @param dataSet The set to trim
 	 * @param columnToTrim The column to insert values into (0-indexed)
@@ -28,7 +31,7 @@ public class WrongFormat {
 		for(int i = 0; i < dataSet.length; i++)
 		{
 			Scanner scan = new Scanner(dataSet[i][columnToTrim]);
-			scan.useDelimiter("[^0-9]+");
+			scan.useDelimiter("[^0-9]+"); // Only scan for integers
 
 			try
 			{
@@ -56,27 +59,73 @@ public class WrongFormat {
 		for(int i = 0; i < dataSet.length; i++)
 		{
 			// Look for a decimal number
-			Pattern my_pattern = Pattern.compile("\\d*[,.]?\\d*");
-			Matcher m = my_pattern.matcher(dataSet[i][columnToTrim]);
-			if(!dataSet[i][columnToTrim].matches("\\d*[,.]?\\d*"))
+			Pattern my_pattern_a = Pattern.compile("[0-9]+[,.][0-9]+");
+			Pattern my_pattern_b = Pattern.compile("[,.][0-9]+");
+			Pattern my_pattern_c = Pattern.compile("[0-9]+");
+			Matcher a = my_pattern_a.matcher(dataSet[i][columnToTrim].trim());
+			Matcher b = my_pattern_b.matcher(dataSet[i][columnToTrim].trim()); 
+			Matcher c = my_pattern_c.matcher(dataSet[i][columnToTrim].trim());
+			if(a.find())
 			{
-				dataSet[i][columnToTrim] = "null";
-				continue;
-			}
-			if(m.find())
-			{
-				// Use locale that uses either comma or period as decimal character
-				NumberFormat nf = NumberFormat.getInstance(Locale.GERMAN);
+				// Use locale that uses either comma or period as decimal character				
+				NumberFormat nf = NumberFormat.getInstance(Locale.US);
+				String valAsString = dataSet[i][columnToTrim].trim().substring(a.start(), a.end());
+				if(valAsString.contains(","))
+				{
+					nf = NumberFormat.getInstance(Locale.GERMAN);
+				}
+
 				double number = 0;
 				try 
 				{
 					// Parse number as double
-					number = nf.parse(dataSet[i][columnToTrim].substring(m.start(), m.end())).doubleValue();
+					number = nf.parse(valAsString).doubleValue();
 				} catch (ParseException e1) 
 				{
 					e1.printStackTrace();
 				}
 				
+				dataSet[i][columnToTrim] = "" + number;
+			}
+			else if(b.find())
+			{
+				// Use locale that uses either comma or period as decimal character
+				NumberFormat nf = NumberFormat.getInstance(Locale.US);
+				String valAsString = dataSet[i][columnToTrim].trim().substring(b.start(), b.end());
+				if(valAsString.contains(","))
+				{
+					nf = NumberFormat.getInstance(Locale.GERMAN);
+				}
+				double number = 0;
+				try 
+				{
+					// Parse number as double
+					number = nf.parse(valAsString).doubleValue();
+				} catch (ParseException e1) 
+				{
+					e1.printStackTrace();
+				}
+				dataSet[i][columnToTrim] = "" + number;
+			}
+			else if(c.find())
+			{
+				// Use locale that uses either comma or period as decimal character
+				NumberFormat nf = NumberFormat.getInstance(Locale.US);
+				double number = 0;
+				String valAsString = dataSet[i][columnToTrim].trim().substring(c.start(), c.end());
+				if(valAsString.contains(","))
+				{
+					nf = NumberFormat.getInstance(Locale.GERMAN);
+				}
+				
+				try 
+				{
+					// Parse number as double
+					number = nf.parse(valAsString).doubleValue();
+				} catch (ParseException e1) 
+				{
+					e1.printStackTrace();
+				}
 				dataSet[i][columnToTrim] = "" + number;
 			}
 			else
@@ -102,7 +151,7 @@ public class WrongFormat {
 		{
 			int index;
 			
-			if ((index = dataSet[i][columnToTransform].indexOf("½")) != -1)
+			if ((index = dataSet[i][columnToTransform].trim().indexOf("½")) != -1)
 			{ 
 				if (index == 0)
 				{
@@ -110,7 +159,7 @@ public class WrongFormat {
 				}
 				else
 				{
-					dataSet[i][columnToTransform] = dataSet[i][columnToTransform].toLowerCase().substring(0, index) + ".5";
+					dataSet[i][columnToTransform] = dataSet[i][columnToTransform].toLowerCase().trim().substring(0, index) + ".5";
 				}
 			}
 		}

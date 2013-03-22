@@ -1,6 +1,38 @@
 package jmhandin.preprocessing;
 
 public class Normalisation {
+	
+	/**
+	 * MinMax normalises a column with numeric values in the correct format.
+	 * 
+	 * @param dataSet The data set to minmax normalise in.
+	 * @param columnToMinMax The column to minmax.
+	 * @param newMin The new minimum.
+	 * @param newMax The new maximum.
+	 * @return The updated data set.
+	 */
+	public static String[][] minMax(String[][] dataSet, int columnToMinMax, double newMin, double newMax)
+	{
+		double max = Double.MIN_VALUE, min = Double.MAX_VALUE;
+		
+		for(int i = 0; i < dataSet.length; i++)
+		{
+			double val = Double.parseDouble(dataSet[i][columnToMinMax]);
+			if(val > max) max = val;
+			if(val < min) min = val;
+		}
+		
+		for(int i = 0; i < dataSet.length; i++)
+		{
+			double val = Double.parseDouble(dataSet[i][columnToMinMax]);
+			double div = (val - min) / (max - min);
+			double newVal = div * (newMax - newMin) + newMin;
+			dataSet[i][columnToMinMax] = "" + newVal;
+		}
+		
+		return dataSet;
+	}
+	
 	/**
 	 * Classifies the column specified into the format int-low, int-med, int-high
 	 * 
