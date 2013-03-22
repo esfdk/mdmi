@@ -1,11 +1,7 @@
 package jmhandin;
 
 import java.io.IOException;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import jmhandin.algorithms.APriori;
 import jmhandin.algorithms.KNN;

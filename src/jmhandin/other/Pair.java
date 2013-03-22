@@ -1,7 +1,5 @@
 package jmhandin.other;
 
-import java.util.ArrayList;
-
 /**
  * A pair of values.
  * 
