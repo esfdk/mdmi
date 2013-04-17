@@ -1,0 +1,25 @@
+Project plan:
+
+	*Data sets:
+		- Uemployment rates in different countries for the past thirty years (Eurostat)
+		- Average income per capita
+		- Market balance
+
+	* Questions:
+		- Yearly (monthly?) clusters for uemployment rates/countries 
+			-- Are northern european countries better at handling periods of high unemployment than southern european countries?
+			-- Periods of high uemployment in clusters 
+		- Is there a correlation between the level of income of the uemployed in different clusters?
+		- Is it possible to predict marketbalance changes and/or unemployment rates from the other?
+			-- Is there a correlation between uemployment clusters and market balance change impact?
+		- Do the different periods of big uemployment rate changes impact different parts of the world differently?
+
+	* Methods (algorithms):
+		- Clustering
+			-- K-means
+		- 
+			--
+
+	* Programs:
+		- Self-coded
+		- Weka?

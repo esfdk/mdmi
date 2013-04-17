@@ -9,8 +9,6 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jmhandin.other.Attributes;
-
 /**
  * Contains static methods for correcting the format of values in a data set.
  * 
