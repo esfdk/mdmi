@@ -2,6 +2,10 @@ package jmhandin;
 
 import java.io.IOException;
 import java.util.*;
+<<<<<<< HEAD
+=======
+
+>>>>>>> a7dbe9974e1dd6e5ef83c06f6597af2e12f4aacb
 import jmhandin.algorithms.APriori;
 import jmhandin.algorithms.KNN;
 import jmhandin.other.Attributes;

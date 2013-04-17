@@ -28,10 +28,10 @@ public class APriori {
 		frequentItemSets.put(1, findFrequentOneItemsets(convertedDataSet, min_support));
 		
 		
-		// Step (2)
+		// Step (2) - as long as there are k-1 frequent sets, attempt to find a k size set.
 		for(int k = 2; (frequentItemSets.get(k - 1).size() != 0); k++)
 		{
-			// Step (3)
+			// Step (3) - generate set of possibly frequent candidates
 			List<List<String>> candidateSet = aprioriGen(frequentItemSets.get(k-1)); 
 			
 			HashMap<List<String>, Integer> candidateTimesSeen = new HashMap<List<String>, Integer>();
@@ -39,13 +39,13 @@ public class APriori {
 			// Step (4)
 			for(int i = 0; i < convertedDataSet.size(); i++)
 			{
-				// Step (5)
+				// Step (5) - generate candidate subsets
 				List<List<String>> candidateSubsets = subset(candidateSet, convertedDataSet.get(i));
 				
-				// Step (6)
+				// Step (6) - run through all candidate subsets
 				for(List<String> candidateSubset : candidateSubsets)
 				{
-					// Step (7)
+					// Step (7) - count number of times a candidate has been seen
 					if(candidateTimesSeen.containsKey(candidateSubset))
 					{
 						candidateTimesSeen.put(candidateSubset, candidateTimesSeen.get(candidateSubset) + 1);						

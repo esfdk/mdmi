@@ -5,8 +5,8 @@ public class Normalisation {
 	/**
 	 * MinMax normalises a column with numeric values in the correct format.
 	 * 
-	 * @param dataSet The data set to minmax normalise in.
-	 * @param columnToMinMax The column to minmax.
+	 * @param dataSet The data set to minimum-max normalise in.
+	 * @param columnToMinMax The column to minimum-max.
 	 * @param newMin The new minimum.
 	 * @param newMax The new maximum.
 	 * @return The updated data set.
