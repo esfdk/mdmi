@@ -11,13 +11,13 @@ public class Main {
 	    try
 	    {
 	    	System.out.println("Balance");
-	        String[][] balanceOfPaymentsRawData = CSVFileReader.read("Files/Project/DataSets/Balance_of_payments_annual.csv", false);
+	        String[][] balanceOfPaymentsRawData = CSVFileReader.read("../Files/Project/DataSets/Balance_of_payments_annual.csv", false);
 	        System.out.println("UE");
-    		String[][] unemploymentRawData = CSVFileReader.read("Files/Project/DataSets/Unemployment_rate_annual.csv", false);
+    		String[][] unemploymentRawData = CSVFileReader.read("../Files/Project/DataSets/Unemployment_rate_annual.csv", false);
     		System.out.println("GDP");
-    		String[][] GDPRawData = CSVFileReader.read("Files/Project/DataSets/Euro_per_inhabitant.csv", false);
+    		String[][] GDPRawData = CSVFileReader.read("../Files/Project/DataSets/Euro_per_inhabitant.csv", false);
     		System.out.println("Pop");
-    		String[][] populationRawData = CSVFileReader.read("Files/Project/DataSets/Population_Annual.csv", false);
+    		String[][] populationRawData = CSVFileReader.read("../Files/Project/DataSets/Population_Annual.csv", false);
     		
 
     		/*
