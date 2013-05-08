@@ -113,19 +113,19 @@ public class DataSetHelpers
     	// Finds the amount of countries and the lowest and highest year
     	for (String[] dataLine : dataset)
     	{
-    		int year = Integer.parseInt(dataLine[yearColumn]);
+    		int year = Integer.parseInt(dataLine[yearColumn].replace("\"", ""));
     		if (year < startYear) startYear = year;
     		if (year > endYear) endYear = year;
     		
-    		if (foundCountries.contains(dataLine[countryColumn]))
+    		if (!foundCountries.contains(dataLine[countryColumn].replace("\"", "")))
     		{
     			amountOfCountries++;
-    			foundCountries.add(dataLine[countryColumn]);
+    			foundCountries.add(dataLine[countryColumn].replace("\"", ""));
     		}
     	}
 
     	// Iterates over all years
-    	for (int i = startYear; i < endYear; i++)
+    	for (int i = startYear; i <= endYear; i++)
     	{
     		// [0] = year, [1] = country, [2] = value
     		String[][] smallDataset = new String[amountOfCountries][3];
@@ -134,17 +134,23 @@ public class DataSetHelpers
     		// Loads the relavant data into smallDataset
         	for (String[] dataLine : dataset)
         	{        		
-        		if (Integer.parseInt(dataLine[yearColumn]) == i)
+        		if (Integer.parseInt(dataLine[yearColumn].replace("\"", "")) == i)
         		{
-                    int val = Integer.parseInt(dataLine[columnToNormalize]);                    
-                    smallDataset[k][0] = "" + Integer.parseInt(dataLine[yearColumn]);
-                    smallDataset[k][1] = dataLine[countryColumn];
-                    smallDataset[k][2] = "" + val;
+        			String val = "?";
+        			if (!dataLine[columnToNormalize].contains("?"))
+        			{
+                        val = dataLine[columnToNormalize].replace("\"", "");    
+        			}
+        			
+                    smallDataset[k][0] = "" + Integer.parseInt(dataLine[yearColumn].replace("\"", ""));
+                    smallDataset[k][1] = dataLine[countryColumn].replace("\"", "");
+                    smallDataset[k][2] = val;
+                    
                     k++;
         		}
         	}
         	
-        	smallDataset = NormalizeSmallDataset(smallDataset, min, max);
+        	smallDataset = NormalizeSmallDataset(smallDataset, min, max);        	
         	dataset = ReturnToLargeDataset(dataset, smallDataset, columnToNormalize);
     	}
     	
@@ -163,12 +169,17 @@ public class DataSetHelpers
      */
     private static String[][] NormalizeSmallDataset(String[][] dataset, int min, int max)
     {
-        int minVal = Integer.MAX_VALUE, maxVal = Integer.MIN_VALUE;
+        float minVal = Float.MAX_VALUE, maxVal = Float.MIN_VALUE;
     	
         // Find lowest and highest value.
         for (String[] dataLine : dataset)
         {
-            int val = Integer.parseInt(dataLine[2]);
+        	if (dataLine[2]. contains("?"))
+        	{
+        		continue;
+        	}
+        	
+        	float val = Float.parseFloat(dataLine[2]);
             if (val < minVal) minVal = val;
             if (val > maxVal) maxVal = val;
         }
@@ -176,8 +187,19 @@ public class DataSetHelpers
         // Change all values (in the column) to be within min and max.
         for (String[] dataLine : dataset)
         {
-            int val = Integer.parseInt(dataLine[2]);
-            dataLine[2] = ( ( ( (val - minVal) / (maxVal - minVal) ) * ( max - min ) ) + min ) + "";
+        	if (dataLine[2]. contains("?"))
+        	{
+        		continue;
+        	}
+        	
+        	// Split up, because otherwise it does not return the correct result.
+            float val = Float.parseFloat(dataLine[2]);
+            float tempVal = (val - minVal);
+            tempVal = tempVal / (maxVal - minVal);
+            tempVal = tempVal * ( max - min );
+            tempVal = tempVal + min; 
+
+            dataLine[2] = "" + (int)tempVal;
         }
 
     	return dataset;
@@ -201,15 +223,18 @@ public class DataSetHelpers
     	// Iterates over all rows in smallDataset
     	for (String[] smallDataLine : smallDataset)
     	{
-    		int year = Integer.parseInt(smallDataLine[yearColumn]);
-    		String country = smallDataLine[countryColumn];
+    		String year = smallDataLine[yearColumn].replace("\"", "");
+    		String country = smallDataLine[countryColumn].replace("\"", "");
     		
     		// Finds the respective row in dataset and changes the data
     		// in columnToChange to the value from smallDataset.
     		for (String[] dataLine : dataset)
     		{
-    			if (Integer.parseInt(dataLine[yearColumn]) == year
-    					&& dataLine[countryColumn] == country)
+        		String year2 = dataLine[yearColumn].replace("\"", "");
+        		String country2 = dataLine[countryColumn].replace("\"", "");
+        		
+    			if (year2.equals(year)
+    					&& country2.equals(country))
     			{
     				dataLine[columnToChange] = smallDataLine[valueColumn];
     			}

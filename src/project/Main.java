@@ -1,8 +1,12 @@
 package project;
 
 import java.io.IOException;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
+=======
+import java.util.Arrays;
+>>>>>>> Tested Normalization and it seems to work
 
 public class Main {
 
@@ -45,6 +49,17 @@ public class Main {
 			
     		data = removeSpaces(data);
     		data = replace(data, "\":\"", "\"?\"");
+
+    		// Normalizes data
+    		/*DataSetHelpers.NormalizeDataset(data, 1, 0, 2, 0, 10);
+    		DataSetHelpers.NormalizeDataset(data, 1, 0, 3, 0, 10);
+    		DataSetHelpers.NormalizeDataset(data, 1, 0, 4, 0, 10);
+    		DataSetHelpers.NormalizeDataset(data, 1, 0, 5, 0, 10);
+
+        	for (String[] d : data)
+        	{
+        		System.out.println(Arrays.toString(d));
+        	}*/
     		
     		WekaWriter.writeDataToFile(data, "datafile");
 	    }
