@@ -10,8 +10,8 @@ public class Main {
 	public static void main(String[] args) {
 	    try
 	    {
-	        String[][] balanceOfPaymentsRawData = CSVFileReader.read("Files/Project/DataSets/Balance_of_payments_annual.csv", false);
-    		String[][] unemploymentRawData = CSVFileReader.read("Files/Project/DataSets/Unemployment_rate_annual.csv", false);
+	        String[][] balanceOfPaymentsRawData = CSVFileReader.read("../Files/Project/DataSets/Balance_of_payments_annual.csv", false);
+    		String[][] unemploymentRawData = CSVFileReader.read("../Files/Project/DataSets/Unemployment_rate_annual.csv", false);
 
     		String[][] balanceOfPaymentsFlagged = getEntriesWithFlags(balanceOfPaymentsRawData, 7);
     		String[][] unemploymentFlagged = getEntriesWithFlags(unemploymentRawData, 6);
@@ -22,8 +22,8 @@ public class Main {
 
 
     		String[][] data = DataSetHelpers.combineDataSets(unemploymentRawData, unemplomentColumns, matchColumns, balanceOfPaymentsRawData, balanceOfPaymentsColumns, matchColumns);
-
-    		//data = replace(data, ":", "?");
+            
+    		data = replace(data, "\":\"", "\"?\"");
 
     		CsvWriter.writeDataToFile(data, "datafile.csv");
 	    }
@@ -43,14 +43,13 @@ public class Main {
 	 */
 	private static String[][] replace(String[][] data, String stringToReplace, String stringToInsert)
 	{
-		for(String[] dataLine : data)
+		for(int i = 0; i < data.length; i++)
 		{
-			for(String dataItem : dataLine)
+			for(int j = 0; j < data[i].length; j++)
 			{
-			    if (dataItem == null) System.out.println("lol");
-				if(dataItem.equals(stringToReplace))
+				if(data[i][j].equals(stringToReplace))
 				{
-					dataItem = stringToInsert;
+					data[i][j] = stringToInsert;
 				}
 			}
 		}
