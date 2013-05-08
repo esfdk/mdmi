@@ -89,9 +89,16 @@ public class Main {
 	
 	private static String[][] getEntriesWithFlags(String[][] data, int flagColumn)
 	{
+		String[][] temp = new String[data.length][3];
+		for(int i = 0; i < data.length; i++)
+		{
+			temp[i][0] = data[i][0];
+			temp[i][1] = data[i][1];
+			temp[i][2] = data[i][flagColumn];
+		}
+		
 		
 		
 		return data;
 	}
-
 }
