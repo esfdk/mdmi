@@ -1,3 +1,5 @@
+package project;
+
 import java.lang.IllegalArgumentException;
 
 public class DataSetHelpers
@@ -73,7 +75,7 @@ public class DataSetHelpers
                 
                 if(matched)
                 {
-                    int c = matchColumns1.length + columns1.length - 1;
+                    int c = matchColumns1.length + columns1.length;
                     for(int column : columns2)
                     {
                         returnDataLine[c] = dataLine[column];

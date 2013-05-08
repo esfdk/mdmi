@@ -1,3 +1,5 @@
+package project;
+
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -14,7 +16,7 @@ public class CsvWriter
      * @param data The data to write to the file.
      * @param fileName The file to write data to.
      */
-    public static void WriteDataToFile(String[][] data, String fileName)
+    public static void writeDataToFile(String[][] data, String fileName)
     {
         try
         {
@@ -22,9 +24,9 @@ public class CsvWriter
 
             for (String[] dataLine : data)
             {
-                for (int i = 0; i < dataLine.length; i++))
+                for (int i = 0; i < dataLine.length; i++)
                 {
-                    writer.append('"' + dataLine[i] + '"');
+                    writer.append(dataLine[i]);
                     
                     if (i < dataLine.length-1)
                     {
