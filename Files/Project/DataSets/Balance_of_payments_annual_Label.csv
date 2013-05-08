@@ -1,12 +1,20 @@
 "DATASET: Balance of payments by country [bop_q_c]"
 
-"LAST UPDATE: 23.04.13 17:06:44"
+"LAST UPDATE: 29.04.13 10:22:17"
 
-"EXTRACTION DATE: 24.04.13 11:34:21"
+"EXTRACTION DATE: 08.05.13 14:14:02"
 
 "SOURCE OF DATA: Eurostat"
 
 "TIME"
+"1975"
+"1976"
+"1977"
+"1978"
+"1979"
+"1980"
+"1981"
+"1982"
 "1983"
 "1984"
 "1985"
@@ -70,7 +78,6 @@
 "Iceland"
 "Norway"
 "Croatia"
-"Former Yugoslav Republic of Macedonia, the"
 "Turkey"
 "United States"
 "Japan"
