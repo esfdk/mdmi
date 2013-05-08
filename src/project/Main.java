@@ -20,9 +20,11 @@ public class Main {
     		String[][] populationRawData = CSVFileReader.read("Files/Project/DataSets/Population_Annual.csv", false);
     		
 
+    		/*
     		String[][] balanceOfPaymentsFlagged = getEntriesWithFlags(balanceOfPaymentsRawData, 7);
     		String[][] unemploymentFlagged = getEntriesWithFlags(unemploymentRawData, 6);
     		String[][] populationFlagged = getEntriesWithFlags(populationRawData, 5);
+    		*/
 
     		int[] matchColumns = {0, 1};
     		int[] balanceOfPaymentsColumns = {6};
@@ -32,11 +34,12 @@ public class Main {
 
 
     		String[][] data = DataSetHelpers.combineDataSets(unemploymentRawData, unemplomentColumns, matchColumns, balanceOfPaymentsRawData, balanceOfPaymentsColumns, matchColumns);
-    		int[] columnsToKeep = {2, 3};
-    		data = DataSetHelpers.combineDataSets(data, columnsToKeep, matchColumns, GDPRawData, GDPColumns, matchColumns);
-    		columnsToKeep = new int[] {2, 3, 4};
-    		data = DataSetHelpers.combineDataSets(data, columnsToKeep, matchColumns, populationRawData, populationColumns, matchColumns); 
+    		int[] columnsToKeep1 = {2, 3};
+    		data = DataSetHelpers.combineDataSets(data, columnsToKeep1, matchColumns, GDPRawData, GDPColumns, matchColumns);
+    		int[] columnsToKeep2 = {2, 3, 4};
+    		data = DataSetHelpers.combineDataSets(data, columnsToKeep2, matchColumns, populationRawData, populationColumns, matchColumns); 
 			
+    		data = removeSpaces(data);
     		data = replace(data, "\":\"", "\"?\"");
 
     		CsvWriter.writeDataToFile(data, "datafile.csv");
@@ -45,6 +48,19 @@ public class Main {
 		{
 		    System.out.println(e.getMessage());
 		}
+	}
+	
+	private static String[][] removeSpaces(String[][] data)
+	{
+		for(int i = 0; i < data.length; i++)
+		{
+			for(int j = 0; j < data[i].length; j++)
+			{
+				data[i][j] = data[i][j].replaceAll(" ", "");
+			}
+		}
+		
+		return data;
 	}
 	
 	/**

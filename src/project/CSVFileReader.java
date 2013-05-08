@@ -32,7 +32,6 @@ public class CSVFileReader {
 			String[] lineTokens = new String[numberOfColumns];
 			while (st.hasMoreTokens()) {
 				// get next token and store it in the array
-				if(col != 0) System.out.println(lineTokens[col -1]);
 				lineTokens[col] = st.nextToken();
 				if (!useNullForBlank && lineTokens[col] == null)
 					lineTokens[col] = "";

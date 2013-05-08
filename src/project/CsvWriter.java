@@ -26,6 +26,7 @@ public class CsvWriter
             {
                 for (int i = 0; i < dataLine.length; i++)
                 {
+                	if(dataLine[i] == null) System.out.println(dataLine[i-1] + ", " + dataLine[i]);
                 	if(!dataLine[i].endsWith("\""))
                 	{
                 		dataLine[i] = dataLine[i] + "\""; 	
