@@ -42,7 +42,7 @@ public class Main {
     		data = removeSpaces(data);
     		data = replace(data, "\":\"", "\"?\"");
 
-    		CsvWriter.writeDataToFile(data, "datafile.csv");
+    		WekaWriter.writeDataToFile(data, "datafile");
 	    }
 		catch (IOException e)
 		{
