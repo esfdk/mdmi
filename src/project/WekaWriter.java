@@ -26,8 +26,8 @@ public class WekaWriter
             writer.append("@RELATION " + fileName + "\n");
             writer.append("@ATTRIBUTE year DATE \"y\" " + "\n");
             writer.append("@ATTRIBUTE country STRING" + "\n");
-            writer.append("@ATTRIBUTE balanceOfPayments NUMERIC" + "\n");
             writer.append("@ATTRIBUTE unemploymentRate NUMERIC" + "\n");
+            writer.append("@ATTRIBUTE balanceOfPayments NUMERIC" + "\n");
             writer.append("@ATTRIBUTE gdpPerInhabitant NUMERIC" + "\n");
             writer.append("@ATTRIBUTE population NUMERIC" + "\n");
 

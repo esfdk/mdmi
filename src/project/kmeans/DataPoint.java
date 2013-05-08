@@ -1,7 +1,7 @@
 package project.kmeans;
 
 import java.util.List;
-import project.enums.DataColumn;
+import project.Enums.DataColumn;
 
 /**
  * Data point in a k-means cluster.
@@ -26,7 +26,10 @@ public class DataPoint
         
         for (int i = 0; i < this.attributeValues.length; i++)
         {
-            this.attributeValues[i] = Double.parseDouble(this.dataLine[attributeIndexes[i]]);
+        	if(!this.dataLine[attributeIndexes[i]].equals("?"))
+        	{
+        		this.attributeValues[i] = Double.parseDouble(this.dataLine[attributeIndexes[i]]);
+        	}
         }
     }
     

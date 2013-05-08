@@ -33,6 +33,11 @@ public class Cluster
     public List<DataPoint> GetDataPoints() {
         return this.dataPoints;
     }
+    
+    public double[] GetCentroid()
+    {
+    	return this.centroid;
+    }
 
     /**
      * Add data point to cluster and re-calculate centroid.

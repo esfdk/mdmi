@@ -2,7 +2,7 @@ package project.kmeans;
 
 import java.util.ArrayList;
 import java.util.List;
-import project.enums.DataColumn;
+import project.Enums.DataColumn;
 
 /**
  * K-means algorithm.
@@ -13,7 +13,7 @@ public class KMeans
 {
     private int k;
     private String[][] data;
-    private int[] attributeIndexes;
+    public int[] attributeIndexes;
     private List<Cluster> clusters;
     private List<DataPoint> dataPoints;
     

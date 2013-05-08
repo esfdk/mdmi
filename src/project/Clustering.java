@@ -1,8 +1,8 @@
 package project;
 
 import java.util.List;
-import kmeans.KMeans;
-import enums.DataColumn;
+import project.kmeans.KMeans;
+import project.Enums.DataColumn;
 
 /**
  * Clustering datamining algorithms.

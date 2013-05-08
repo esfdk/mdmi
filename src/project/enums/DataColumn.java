@@ -1,11 +1,11 @@
-package project.enums;
+package project.Enums;
 
 public enum DataColumn
 {
     Year,
     Country,
-    BalanceOfPayments,
     UnemploymentRate,
+    BalanceOfPayments,
     GdpPerInhabitant,
     Population
 }
