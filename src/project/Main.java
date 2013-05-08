@@ -21,7 +21,7 @@ public class Main {
 		
 		String[][] data = combineDataSets(unemploymentRawData, unemplomentColumns, matchColumns, balanceOfPaymentsRawData, balanceOfPaymentsColumns, matchColumns);
 		
-		data = Replace(data, ":", "?"); 
+		data = replace(data, ":", "?"); 
 	}
 	
 	/**
