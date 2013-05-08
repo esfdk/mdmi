@@ -12,17 +12,26 @@ public class Main {
 	    {
 	        String[][] balanceOfPaymentsRawData = CSVFileReader.read("Files/Project/DataSets/Balance_of_payments_annual.csv", false);
     		String[][] unemploymentRawData = CSVFileReader.read("Files/Project/DataSets/Unemployment_rate_annual.csv", false);
+    		String[][] GDPRawData = CSVFileReader.read("Files/Project/DataSets/Euro_per_inhabitant.csv", false);
+    		String[][] populationRawData = CSVFileReader.read("Files/Project/DataSets/Population_Annual.csv", false);
 
     		String[][] balanceOfPaymentsFlagged = getEntriesWithFlags(balanceOfPaymentsRawData, 7);
     		String[][] unemploymentFlagged = getEntriesWithFlags(unemploymentRawData, 6);
+    		String[][] populationFlagged = getEntriesWithFlags(populationRawData, 5);
 
     		int[] matchColumns = {0, 1};
     		int[] balanceOfPaymentsColumns = {6};
     		int[] unemplomentColumns = {5};
+    		int[] GDPColumns = {4};
+    		int[] populationColumns = {4};
 
 
     		String[][] data = DataSetHelpers.combineDataSets(unemploymentRawData, unemplomentColumns, matchColumns, balanceOfPaymentsRawData, balanceOfPaymentsColumns, matchColumns);
-
+    		int[] columnsToKeep = {2, 3};
+    		data = DataSetHelpers.combineDataSets(data, columnsToKeep, matchColumns, GDPRawData, GDPColumns, matchColumns);
+    		columnsToKeep = {2, 3, 4};
+    		data = DataSetHelpers.combineDataSets(data, columnsToKeep, matchColumns, populationRawData, populationColumns, matchColumns); 
+    				
     		//data = replace(data, ":", "?");
 
     		CsvWriter.writeDataToFile(data, "datafile.csv");
