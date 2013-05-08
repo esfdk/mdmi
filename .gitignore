@@ -8,3 +8,10 @@ org.eclipse.jdt.core.prefs
 *.jar
 *.war
 *.ear
+
+# Tex files
+*.aux
+*.log
+*.out
+*.toc
+*.gz
