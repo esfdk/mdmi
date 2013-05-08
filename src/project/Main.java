@@ -1,12 +1,9 @@
 package project;
 
 import java.io.IOException;
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
-=======
 import java.util.Arrays;
->>>>>>> Tested Normalization and it seems to work
 
 public class Main {
 
