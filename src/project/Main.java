@@ -31,8 +31,8 @@ public class Main {
     		data = DataSetHelpers.combineDataSets(data, columnsToKeep, matchColumns, GDPRawData, GDPColumns, matchColumns);
     		columnsToKeep = {2, 3, 4};
     		data = DataSetHelpers.combineDataSets(data, columnsToKeep, matchColumns, populationRawData, populationColumns, matchColumns); 
-    				
-    		//data = replace(data, ":", "?");
+			
+    		data = replace(data, "\":\"", "\"?\"");
 
     		CsvWriter.writeDataToFile(data, "datafile.csv");
 	    }
@@ -52,14 +52,13 @@ public class Main {
 	 */
 	private static String[][] replace(String[][] data, String stringToReplace, String stringToInsert)
 	{
-		for(String[] dataLine : data)
+		for(int i = 0; i < data.length; i++)
 		{
-			for(String dataItem : dataLine)
+			for(int j = 0; j < data[i].length; j++)
 			{
-			    if (dataItem == null) System.out.println("lol");
-				if(dataItem.equals(stringToReplace))
+				if(data[i][j].equals(stringToReplace))
 				{
-					dataItem = stringToInsert;
+					data[i][j] = stringToInsert;
 				}
 			}
 		}
