@@ -1,7 +1,7 @@
 package project.kmeans;
 
 import java.util.List;
-import project.Enums.DataColumn;
+import project.enums.DataColumn;
 
 /**
  * Data point in a k-means cluster.

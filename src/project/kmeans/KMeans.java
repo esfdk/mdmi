@@ -2,7 +2,7 @@ package project.kmeans;
 
 import java.util.ArrayList;
 import java.util.List;
-import project.Enums.DataColumn;
+import project.enums.DataColumn;
 
 /**
  * K-means algorithm.

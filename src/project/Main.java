@@ -3,7 +3,7 @@ package project;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import project.Enums.DataColumn;
+import project.enums.DataColumn;
 import project.kmeans.KMeans;
 import project.kmeans.Cluster;
 import project.kmeans.DataPoint;
@@ -51,10 +51,32 @@ public class Main {
     		data = replace(data, "\":\"", "\"?\"");
 
     		// Normalizes data
-    		DataSetHelpers.NormalizeDataset(data, 1, 0, 2, 0, 10);
-    		DataSetHelpers.NormalizeDataset(data, 1, 0, 3, 0, 10);
-    		DataSetHelpers.NormalizeDataset(data, 1, 0, 4, 0, 10);
-    		DataSetHelpers.NormalizeDataset(data, 1, 0, 5, 0, 10);
+    		/*data = DataSetHelpers.normalizeDataset(data, 1, 0, 2, 0, 10);
+    		data = DataSetHelpers.normalizeDataset(data, 1, 0, 3, 0, 10);
+    		data = DataSetHelpers.normalizeDataset(data, 1, 0, 4, 0, 10);
+    		data = DataSetHelpers.normalizeDataset(data, 1, 0, 5, 0, 10);*/
+    		
+    		// Discretizes data
+    		/*ArrayList<Range> ranges = new ArrayList<Range>();
+    		ranges.add(new Range(0, 4));
+    		ranges.add(new Range(4, 8));
+    		ranges.add(new Range(8, 12));
+    		ranges.add(new Range(12, 16));
+    		ranges.add(new Range(16, 20));
+    		ranges.add(new Range(20, 100));
+    		data = DataSetHelpers.discretizeColumnYear(data, ranges, 2, 1983, 0);
+    		data = DataSetHelpers.discretizeColumn(data, ranges, 2);*/
+    		
+    		// Prints array for testing dataset helpers
+    		/*for (String[] dl : data)
+    		{
+    			System.out.print("[");
+    			for (String d : dl)
+    			{
+    				System.out.print(d.toString() + ", ");
+    			}
+    			System.out.println("]");
+    		}*/
     		
     		WekaWriter.writeDataToFile(data, "datafile");
     		

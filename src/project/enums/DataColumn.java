@@ -1,4 +1,4 @@
-package project.Enums;
+package project.enums;
 
 public enum DataColumn
 {
