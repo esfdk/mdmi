@@ -83,12 +83,33 @@ public class Main {
     		KMeans kmeans = new KMeans(5);
     		List<DataColumn> attributes = new ArrayList<DataColumn>();
     		
-    		attributes.add(DataColumn.UnemploymentRate);
+    		/*attributes.add(DataColumn.UnemploymentRate);
             attributes.add(DataColumn.BalanceOfPayments);
-            attributes.add(DataColumn.GdpPerInhabitant);
+            attributes.add(DataColumn.GdpPerInhabitant);*/
             attributes.add(DataColumn.Population);
             
             kmeans.ClusterData(data, attributes);
+            
+            int[] attrIdx = new int[attributes.size()];
+            for (int i = 0; i < attrIdx.length; i++)
+            {
+                attrIdx[i] = attributes.get(i).ordinal();
+            }
+            
+            DataPoint usa = new DataPoint(new String[] { "2011", "United States", "8.9", "-339793", "34700", "310544109" }, attrIdx);
+            kmeans.AddDataPoint(usa);
+            
+            int clusterId = kmeans.getClusterIndexFromDataPoint(usa);
+            System.out.println("\nUSA ended up in cluster #" + clusterId + "\n");
+            Cluster cluster = kmeans.GetClusters().get(clusterId);
+            
+            System.out.println("Countries like USA:");
+            List<DataPoint> dataPoints = cluster.GetDataPoints();
+	        for (DataPoint dp : dataPoints)
+	        {
+	            System.out.println(dp.getOriginalAttribute(DataColumn.Country.ordinal()) + ", " + dp.getOriginalAttribute(DataColumn.Year.ordinal()));
+	        }
+            
             printClusters(kmeans);
 	    }
 		catch (IOException e)
@@ -182,17 +203,17 @@ public class Main {
 	        {
 	            System.out.println(val);
 	        }*/
-	        System.out.println("Unemployment rate: " + centroid[0]);
+	        /*System.out.println("Unemployment rate: " + centroid[0]);
 	        System.out.println("Balance of payments: " + centroid[1]);
-	        System.out.println("GDP Per Inhabitant: " + centroid[2]);
-	        System.out.println("Population: " + centroid[3]);
+	        System.out.println("GDP Per Inhabitant: " + centroid[2]);*/
+	        System.out.println("Population: " + centroid[0]);
 	        
-	        System.out.println("\nDatapoints:");
+	        /*System.out.println("\nDatapoints:");
 	        List<DataPoint> dataPoints = c.GetDataPoints();
 	        for (DataPoint dp : dataPoints)
 	        {
 	            System.out.println(dp.getOriginalAttribute(DataColumn.Country.ordinal()) + ", " + dp.getOriginalAttribute(DataColumn.Year.ordinal()));
-	        }
+	        }*/
 	        
 	        System.out.println("-------------------------------------------\n");
 	        
