@@ -1,5 +1,6 @@
 \section{K-means Results}
 
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,numbers=none]
 === Run information ===
 
 Scheme:weka.clusterers.SimpleKMeans -N 5 -A "weka.core.EuclideanDistance -R first-last" -I 500 -S 0
@@ -44,11 +45,11 @@ Time taken to build model (full training data) : 0.1 seconds
 
 Clustered Instances
 
-0      355 ( 39\%)
-1       87 ( 10\%)
-2      192 ( 21\%)
-3       88 ( 10\%)
-4      178 ( 20\%)
+0      355 ( 39%)
+1       87 ( 10%)
+2      192 ( 21%)
+3       88 ( 10%)
+4      178 ( 20%)
 
 year,country,unemploymentRate,balanceOfPayments,gdpPerInhabitant,population,Cluster
 1985,Finland,?,-967,14800,4893748,cluster0
@@ -953,3 +954,4 @@ year,country,unemploymentRate,balanceOfPayments,gdpPerInhabitant,population,Clus
 2012,Turkey,8.1,-36400,?,74724269,cluster4
 
 2011,USA,8.9,-339793,34700,310544109,cluster4
+\end{lstlisting}
