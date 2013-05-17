@@ -1,12 +1,20 @@
-\chapter{Introducton}
+\section{Introducton}
 \label{Intro}
 This report is the result of a project in Data Mining at the IT-University of Copenhagen during spring 2013.
 \\Source code, data sets and graphs can be found on the attached DVD-disk and on our GIT repository \textbf{https://github.com/esfdk/mdmi}
 
-
 \section{Goal of the project}
-This project attempts to cluster European nations based on population, balance of payments\footnote{Balance of Payments is the method countries use to monitor assets and liabilities.\cite[What Is Balance Of Payments?]{Investopedia}}, unemployment rate and gross domestic product from 1975 to 2012. We visualise the resulting clusters to show if any one European nation always stays in the same cluster or if there is any nation that often changes cluster.
-\\We will also see if there what countries that is most similar to the United States of America and Japan.
-\\In addition we use a frequent pattern data mining algorithm to see if there are any frequent patterns in a nations values over the years.
+This project attempts to cluster European nations based on population, balance of payments\footnote{Balance of Payments is the method countries use to monitor assets and liabilities.\cite[What Is Balance Of Payments?]{Investopedia}}, unemployment rate and gross domestic product from 1975 to 2012.
 
-\section{Questions}
+\subsection{Methods}
+We use Weka to process our data. Clustering is done using Weka's simple k-means algorithm and frequent patterns are found using Weka's A-Priori algorithm.
+\\We preprocess the data using our self-written algorithms.
+
+\subsection{Questions}
+\label{Intro_que}
+\begin{my_itemize}
+\item What, if any, European nations stay in the same cluster from 1983 to 2012?
+\item What, if any, European nations change cluster often during 1983 to 2012?
+\item What cluster does the United States of America (2011) fit into and what countries are in that same cluster for 2011?
+\item What, if any, frequent patterns are in the data?
+\end{my_itemize}

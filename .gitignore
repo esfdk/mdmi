@@ -16,3 +16,4 @@ org.eclipse.jdt.core.prefs
 *.out
 *.toc
 *.gz
+*.pdf
