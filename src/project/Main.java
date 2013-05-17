@@ -51,10 +51,10 @@ public class Main {
     		WekaWriter.writeKMDataToFile(data, "KMeansReadyDataSet");
 
     		// Normalizes data
-    		data = DataSetHelpers.normalizeDataset(data, 1, 0, DataColumn.UnemploymentRate.ordinal(), 0, 10);
-    		data = DataSetHelpers.normalizeDataset(data, 1, 0, DataColumn.BalanceOfPayments.ordinal(), 0, 10);
-    		data = DataSetHelpers.normalizeDataset(data, 1, 0, DataColumn.GdpPerInhabitant.ordinal(), 0, 10);
-    		data = DataSetHelpers.normalizeDataset(data, 1, 0, DataColumn.Population.ordinal(), 0, 10);
+    		data = DataSetHelpers.normalizeDataset(data, 1, 0, DataColumn.UnemploymentRate.ordinal(), 0, 5);
+    		data = DataSetHelpers.normalizeDataset(data, 1, 0, DataColumn.BalanceOfPayments.ordinal(), 0, 5);
+    		data = DataSetHelpers.normalizeDataset(data, 1, 0, DataColumn.GdpPerInhabitant.ordinal(), 0, 5);
+    		data = DataSetHelpers.normalizeDataset(data, 1, 0, DataColumn.Population.ordinal(), 0, 5);
     		
     		// Discretizes data
     		ArrayList<Range> ranges = new ArrayList<Range>();
