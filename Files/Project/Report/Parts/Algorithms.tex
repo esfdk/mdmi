@@ -1,8 +1,5 @@
 \section{Algorithms}
 \label{Algo}
-\section{K-means clustering}
-K-means is a clustering algorithm, which starts out by randomly distributing the elements into clusters. The algorithm then calculates a so-called "centroid" for each cluster, which is calculated from the clustering attributes of each element within that cluster. The algorithm then calculates the distance from each element to all clusters, and moves it into its closest cluster. When all element are moved to their nearest cluster, the centroid is re-calculated. This is repeated until no elements are moved into new clusters, and the state is stable.
 
-Once the algorithm is finished, each cluster contains similar elements (similar according to the attributes used for clustering). We can use this information to see which elements are similar, and to inject a new element and predict some of its values (values not used for clustering).
-
-We use K-means clustering for injecting a new country, and see which countries are similar to that country economically.
+\input{Parts/Algorithms/Algorithms_KMeans.tex}
+\input{Parts/Algorithms/Algorithms_APriori.tex}
