@@ -1,4 +1,4 @@
-\documentclass{report}
+\documentclass{article}
 
 % Packages
 \usepackage[utf8]{inputenc}
@@ -61,25 +61,12 @@ numbers = left}
 \cfoot{\thepage\ af \pageref{LastPage}}
 \fancypagestyle{plain}{\fancyhf{}\cfoot{\thepage\ af \pageref{LastPage}}
 }
-\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{}}{}}
 \fancypagestyle{plain}{
 \fancyhf{}
 \cfoot{\thepage\ af \pageref{LastPage}}
 }
 
-% Table of contents depth
-\settocdepth{chapter}
 
-% New commands and environments
-\newcommand{\skippage}
-{
-\chapter*{}
-\thispagestyle{empty}
-\addtocounter{page}{-1}
-\pagebreak
-}
-\newcommand{\class}[1]{\texttt{#1}}
-\newcommand{\method}[1]{\texttt{#1}}
 \newenvironment{my_itemize}{\begin{itemize}[itemsep=0pt, topsep=0pt, partopsep=0pt]}{\end{itemize}}
 \newenvironment{my_enumerate}{\begin{enumerate}[itemsep=0pt, topsep=0pt, partopsep=0pt]}{\end{enumerate}}
 \newenvironment{my_description}{\begin{description}[itemsep=0pt, topsep=0pt, partopsep=0pt]}{\end{description}}
@@ -89,23 +76,21 @@ numbers = left}
 }
 
 % Title
-\title{\Huge{Bachelor}\\
-\Large{\textit{\\Bachelor}}\\
-\large{\textit{\\Bachelor in Software Development, \\IT-University of Copenhagen}}
+\title{\Huge{Mining of Economical Data for European Countries from 1983 to 2012}\\
+\Large{\textit{Data Mining}}\\
+\large{\textit{\\IT-University of Copenhagen}}
 }
 
 % Author
 \author{
 Jakob Melnyk, jmel@itu.dk\\
-Frederik Lysgaard, frly@itu.dk
+Niklas Hansen, nikl@itu.dk\\
+Jacob Claudius Grooss, jcgr@itu.dk
 }
 
 \date{May 22st, 2012}
 \begin{document}
 \maketitle
-\skippage
-\tableofcontents
-\skippage
 \input{Parts/Introduction}
 \input{Parts/DataSet}
 \input{Parts/Preprocessing}
