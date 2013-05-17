@@ -1,5 +1,6 @@
 datafile.csv
 datafile.arff
+*.arff
 *.class
 org.eclipse.jdt.core.prefs
 

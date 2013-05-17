@@ -2,7 +2,10 @@ package project;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import project.apriori.*;
 import project.enums.DataColumn;
 import project.kmeans.KMeans;
 import project.kmeans.Cluster;
@@ -49,37 +52,33 @@ public class Main {
 			
     		data = removeSpaces(data);
     		data = replace(data, "\":\"", "\"?\"");
+    		
+    		WekaWriter.writeDataToFile(data, "KMeansReadyDataSet");
 
     		// Normalizes data
-    		/*data = DataSetHelpers.normalizeDataset(data, 1, 0, 2, 0, 10);
-    		data = DataSetHelpers.normalizeDataset(data, 1, 0, 3, 0, 10);
-    		data = DataSetHelpers.normalizeDataset(data, 1, 0, 4, 0, 10);
-    		data = DataSetHelpers.normalizeDataset(data, 1, 0, 5, 0, 10);*/
+    		data = DataSetHelpers.normalizeDataset(data, 1, 0, DataColumn.UnemploymentRate.ordinal(), 0, 10);
+    		data = DataSetHelpers.normalizeDataset(data, 1, 0, DataColumn.BalanceOfPayments.ordinal(), 0, 10);
+    		data = DataSetHelpers.normalizeDataset(data, 1, 0, DataColumn.GdpPerInhabitant.ordinal(), 0, 10);
+    		data = DataSetHelpers.normalizeDataset(data, 1, 0, DataColumn.Population.ordinal(), 0, 10);
     		
     		// Discretizes data
-    		/*ArrayList<Range> ranges = new ArrayList<Range>();
-    		ranges.add(new Range(0, 4));
-    		ranges.add(new Range(4, 8));
-    		ranges.add(new Range(8, 12));
-    		ranges.add(new Range(12, 16));
-    		ranges.add(new Range(16, 20));
-    		ranges.add(new Range(20, 100));
-    		data = DataSetHelpers.discretizeColumnYear(data, ranges, 2, 1983, 0);
-    		data = DataSetHelpers.discretizeColumn(data, ranges, 2);*/
-    		
-    		// Prints array for testing dataset helpers
-    		/*for (String[] dl : data)
+    		ArrayList<Range> ranges = new ArrayList<Range>();
+    		for(float fl = 0.0f; fl <= 9.5f ; fl += 0.5f)
     		{
-    			System.out.print("[");
-    			for (String d : dl)
-    			{
-    				System.out.print(d.toString() + ", ");
-    			}
-    			System.out.println("]");
-    		}*/
+    			ranges.add(new Range(fl, fl + 0.5f));	
+    		}
     		
-    		WekaWriter.writeDataToFile(data, "datafile");
+    		ranges.add(new Range(10.0f, 10.0f));
     		
+    		for(int i = 1983; i <= 2012; i++)
+    		{
+    			data = DataSetHelpers.discretizeColumnYear(data, ranges, DataColumn.UnemploymentRate.ordinal(), i, 0);
+    			data = DataSetHelpers.discretizeColumnYear(data, ranges, DataColumn.BalanceOfPayments.ordinal(), i, 0);
+    			data = DataSetHelpers.discretizeColumnYear(data, ranges, DataColumn.GdpPerInhabitant.ordinal(), i, 0);
+    			data = DataSetHelpers.discretizeColumnYear(data, ranges, DataColumn.Population.ordinal(), i, 0);
+    		}
+    		
+    		WekaWriter.writeDataToFile(data, "apReadyDataSet");
 	    }
 		catch (IOException e)
 		{
@@ -157,4 +156,6 @@ public class Main {
 		
 		return rarray;
 	}
+	
+	
 }

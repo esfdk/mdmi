@@ -2,7 +2,6 @@ package project;
 
 import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class DataSetHelpers
@@ -117,7 +116,7 @@ public class DataSetHelpers
             {
                 if (range.inRange(value))
                 {
-                    dataLine[column] = range.getLowerEnd() + "-" + range.getHigherEnd();
+                    dataLine[column] = range.lowerEnd + "-" + range.higherEnd;
                 }
             }
         }
@@ -154,7 +153,7 @@ public class DataSetHelpers
             {
                 if (range.inRange(value))
                 {
-                    dataLine[column] = range.getLowerEnd() + "-" + range.getHigherEnd();
+                    dataLine[column] = range.lowerEnd + "-" + range.higherEnd;
                 }
             }
         }
@@ -174,7 +173,7 @@ public class DataSetHelpers
      * @return The normalized dataset.
      */
     public static String[][] normalizeDataset(
-    		String[][] dataset, int countryColumn, int yearColumn, int columnToNormalize, int min, int max)
+    		String[][] dataset, int countryColumn, int yearColumn, int columnToNormalize, float min, float max)
     {
     	ArrayList<String> foundCountries = new ArrayList<String>();
     	int startYear = 5000;
@@ -238,7 +237,7 @@ public class DataSetHelpers
      * @param max Maximum value to use in new dataset (e.g. 1).
      * @return Updated dataset.
      */
-    private static String[][] normalizeSmallDataset(String[][] dataset, int min, int max)
+    private static String[][] normalizeSmallDataset(String[][] dataset, float min, float max)
     {
         float minVal = Float.MAX_VALUE, maxVal = Float.MIN_VALUE;
     	
@@ -270,7 +269,7 @@ public class DataSetHelpers
             tempVal = tempVal * ( max - min );
             tempVal = tempVal + min; 
 
-            dataLine[2] = "" + (int)tempVal;
+            dataLine[2] = "" + tempVal;
         }
 
     	return dataset;
