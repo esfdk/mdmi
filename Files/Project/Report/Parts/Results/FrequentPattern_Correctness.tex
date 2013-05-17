@@ -1,4 +1,5 @@
 \subsubsection{Correctness}
 \label{Res_FP_Cor}
+Even though the association rule has 90\% confidence, it seems unlikely that this rule has any real support. This is due to the fact that it has quite a low support count (1\%) and thus really is not support by the dataset. Therefore we will disregard it.
 
-While the rule has a 90\% confidence, it it not found until the support is 1\%. This means that there are very few instances where this rule holds, and because of that, we will disregard it. SKAL SIKKERT SIGES ANDERLEDES
+If we had lowered our normalisation range to half of what we used, we would most likely have found more occurences of frequent 4-itemsets and generated more association rules. Lowering the range of our normalisation means differentiating less between the nations and thus making the generated association rules too broad. Therefore the value of the association rules would be not be very high, as they would not give meaningful insight into how the different values interact.

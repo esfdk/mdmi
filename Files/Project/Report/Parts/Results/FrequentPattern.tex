@@ -1,12 +1,30 @@
 \subsection{Frequent Patterns}
 \label{Res_FP}
+We ran Weka's Apriori algorithm with the standard input values at first with a minimum support of 0.1 (10\% of the total data entries). This resulted in no frequent 4-itemsets (and no association rules). In addition we ran the algorithm with a minimum support value of 0.05 (5\%). This also resuletd in no frequent 4-itemsets (and no association rules).
+\\The first time a frequent 4-itemset was found was when we lowered the minimum support value to 0.01 (1\%). The 4-itemset had a support count of 9 and had values:
+\begin{align*}
+	[unemploymentRate=2.0-2.5; \\
+	balanceOfPayments=1.0-1.5; \\
+	gdpPerInhabitant=0.0-0.5; \\
+	population=0.0-0.5]
+\end{align*}
 
-We decided to run the A Priori with a support of 10\%, 5\% and 1\% (the results for the runs can be seen in appendix \ref{A_ap_results} on page \pageref{A_ap_results}). We found that there were no frequent patterns of size four for neither 10\% nor 5\%. We had to lower the support to 1\% before we found the size four itemset \texttt{[unemploymentRate=2.0-2.5 balanceOfPayments=1.0-1.5 gdpPerInhabitant=0.0-0.5 population=0.0-0.5 9]} with the following rule
+Weka generated an association rule with 90\% confidence based on the itemset. 
+\\There are 10 occurences of the following itemset in the dataset:
+\begin{align*}
+	[unemploymentRate=2.0-2.5;\\
+	balanceOfPayments=1.0-1.5;\\ 
+	population=0.0-0.5]
+\end{align*}
 
-\begin{center}
-	\texttt{unemploymentRate=2.0-2.5 balanceOfPayments=1.0-1.5 population=0.0-0.5 10 ==> gdpPerInhabitant=0.0-0.5 9}
-\end{center}
+There were 9 instances where \begin{math}[gdpPerInhabitant=0.0-0.5]\end{math} was combined with the beforementioned itemset.
 
-with a confidence of 90\%.
+The association rule generated from these instances is as follows:
+\begin{align*}
+	[unemploymentRate=2.0-2.5;\\
+	balanceOfPayments=1.0-1.5;\\ 
+	population=0.0-0.5]
+	\\==> gdpPerInhabitant=0.0-0.5
+\end{align*}
 
 \input{Parts/Results/FrequentPattern_Correctness.tex}
