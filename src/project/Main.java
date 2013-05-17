@@ -2,14 +2,9 @@ package project;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import project.apriori.*;
 import project.enums.DataColumn;
-import project.kmeans.KMeans;
-import project.kmeans.Cluster;
-import project.kmeans.DataPoint;
 
 public class Main {
 
@@ -20,23 +15,23 @@ public class Main {
 	    try
 	    {
 	    	System.out.println("UE");
-    		String[][] unemploymentRawData = CSVFileReader.read("../Files/Project/DataSets/Unemployment_rate_annual.csv", false);
+    		String[][] unemploymentRawData = CSVFileReader.read("Files/Project/DataSets/Unemployment_rate_annual.csv", false);
 	    	System.out.println("Balance");
-	        String[][] balanceOfPaymentsRawData = CSVFileReader.read("../Files/Project/DataSets/Balance_of_payments_annual.csv", false);
+	        String[][] balanceOfPaymentsRawData = CSVFileReader.read("Files/Project/DataSets/Balance_of_payments_annual.csv", false);
     		System.out.println("GDP");
-    		String[][] GDPRawData = CSVFileReader.read("../Files/Project/DataSets/Euro_per_inhabitant.csv", false);
+    		String[][] GDPRawData = CSVFileReader.read("Files/Project/DataSets/Euro_per_inhabitant.csv", false);
     		System.out.println("Pop");
-    		String[][] populationRawData = CSVFileReader.read("../Files/Project/DataSets/Population_Annual.csv", false);
+    		String[][] populationRawData = CSVFileReader.read("Files/Project/DataSets/Population_Annual.csv", false);
     		
     		String[][] balanceOfPaymentsFlagged = getEntriesWithFlags(balanceOfPaymentsRawData, 7);
     		String[][] unemploymentFlagged = getEntriesWithFlags(unemploymentRawData, 6);
     		String[][] GDPFlagged = getEntriesWithFlags(GDPRawData, 5);
     		String[][] populationFlagged = getEntriesWithFlags(populationRawData, 5);
 
-    		CsvWriter.writeDataToFile(balanceOfPaymentsFlagged, "../Files/Project/DataSets/Flagged/balance_flagged.csv");
-    		CsvWriter.writeDataToFile(unemploymentFlagged, "../Files/Project/DataSets/Flagged/unemployment_flagged.csv");
-    		CsvWriter.writeDataToFile(GDPFlagged, "../Files/Project/DataSets/Flagged/GDP_flagged.csv");
-    		CsvWriter.writeDataToFile(populationFlagged, "../Files/Project/DataSets/Flagged/population_flagged.csv");
+    		CsvWriter.writeDataToFile(balanceOfPaymentsFlagged, "Files/Project/DataSets/Flagged/balance_flagged.csv");
+    		CsvWriter.writeDataToFile(unemploymentFlagged, "Files/Project/DataSets/Flagged/unemployment_flagged.csv");
+    		CsvWriter.writeDataToFile(GDPFlagged, "Files/Project/DataSets/Flagged/GDP_flagged.csv");
+    		CsvWriter.writeDataToFile(populationFlagged, "Files/Project/DataSets/Flagged/population_flagged.csv");
     		
     		int[] matchColumns = {0, 1};
     		int[] balanceOfPaymentsColumns = {6};
@@ -53,7 +48,7 @@ public class Main {
     		data = removeSpaces(data);
     		data = replace(data, "\":\"", "\"?\"");
     		
-    		WekaWriter.writeDataToFile(data, "KMeansReadyDataSet");
+    		WekaWriter.writeKMDataToFile(data, "KMeansReadyDataSet");
 
     		// Normalizes data
     		data = DataSetHelpers.normalizeDataset(data, 1, 0, DataColumn.UnemploymentRate.ordinal(), 0, 10);
@@ -78,7 +73,7 @@ public class Main {
     			data = DataSetHelpers.discretizeColumnYear(data, ranges, DataColumn.Population.ordinal(), i, 0);
     		}
     		
-    		WekaWriter.writeDataToFile(data, "apReadyDataSet");
+    		WekaWriter.writeAPDataToFile(data, "apReadyDataSet");
 
 	    }
 		catch (IOException e)
@@ -157,46 +152,4 @@ public class Main {
 		
 		return rarray;
 	}
-	
-<<<<<<< HEAD
-<<<<<<< HEAD
-	
-=======
-=======
->>>>>>> 01f8882c7a869c2f904bf24479fab58d99ace578
-	public static void printClusters(KMeans kmeans)
-	{
-	    List<Cluster> clusters = kmeans.GetClusters();
-	    
-	    int i = 0;
-	    for (Cluster c : clusters)
-	    {
-	        System.out.println("Cluster #" + i);
-	        
-	        double[] centroid = c.GetCentroid();
-	        /*for (double val : centroid)
-	        {
-	            System.out.println(val);
-	        }*/
-	        /*System.out.println("Unemployment rate: " + centroid[0]);
-	        System.out.println("Balance of payments: " + centroid[1]);
-	        System.out.println("GDP Per Inhabitant: " + centroid[2]);*/
-	        System.out.println("Population: " + centroid[0]);
-	        
-	        /*System.out.println("\nDatapoints:");
-	        List<DataPoint> dataPoints = c.GetDataPoints();
-	        for (DataPoint dp : dataPoints)
-	        {
-	            System.out.println(dp.getOriginalAttribute(DataColumn.Country.ordinal()) + ", " + dp.getOriginalAttribute(DataColumn.Year.ordinal()));
-	        }*/
-	        
-	        System.out.println("-------------------------------------------\n");
-	        
-	        i++;
-	    }
-	}
-<<<<<<< HEAD
->>>>>>> 01f8882c7a869c2f904bf24479fab58d99ace578
-=======
->>>>>>> 01f8882c7a869c2f904bf24479fab58d99ace578
 }
