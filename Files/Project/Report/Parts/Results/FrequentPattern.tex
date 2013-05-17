@@ -1,4 +1,12 @@
 \subsection{Frequent Patterns}
 \label{Res_FP}
 
+We decided to run the A Priori with a support of 10\%, 5\% and 1\% (the results for the runs can be seen in appendix \ref{A_ap_results} on page \pageref{A_ap_results}). We found that there were no frequent patterns of size four for neither 10\% nor 5\%. We had to lower the support to 1\% before we found the size four itemset \texttt{[unemploymentRate=2.0-2.5 balanceOfPayments=1.0-1.5 gdpPerInhabitant=0.0-0.5 population=0.0-0.5 9]} with the following rule
+
+\begin{center}
+	\texttt{unemploymentRate=2.0-2.5 balanceOfPayments=1.0-1.5 population=0.0-0.5 10 ==> gdpPerInhabitant=0.0-0.5 9}
+\end{center}
+
+with a confidence of 90\%.
+
 \input{Parts/Results/FrequentPattern_Correctness.tex}
