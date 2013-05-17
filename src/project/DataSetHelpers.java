@@ -3,6 +3,7 @@ package project;
 import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class DataSetHelpers
 {
@@ -92,6 +93,76 @@ public class DataSetHelpers
     }
     
     /**
+     * Discretize all values in the given column with the intervals provided.
+     * 
+     * @param dataset Dataset to work on.
+     * @param column The column to discretize.
+     * @param rangeBins The ranges to discretize by.
+     * @return The updated dataset.
+     */
+    public static String[][] discretizeColumn(String[][] dataset, List<Range> ranges, int column)
+    {
+    	// Iterate over all lines in dataset
+        for (String[] dataLine : dataset)
+        {
+        	// Is it's a question mark, skip the line
+        	if (dataLine[column].replace("\"", "").equals("?"))
+        	{
+        		continue;
+        	}        	
+        	
+        	// Get the value and see if it fits in any of the given ranges
+            float value = Float.parseFloat(dataLine[column].replace("\"", ""));
+            for (Range range : ranges)
+            {
+                if (range.inRange(value))
+                {
+                    dataLine[column] = range.getLowerEnd() + "-" + range.getHigherEnd();
+                }
+            }
+        }
+    	
+    	return dataset;
+    }
+    
+    /**
+     * Discretize all values in the given column with the intervals provided,
+     * assuming they are from the given year.
+     * 
+     * @param dataset Dataset to work on.
+     * @param ranges The ranges to discretize by.
+     * @param column The column to discretize.
+     * @param year The year to discretize for.
+     * @param yearColumn The column where the year is
+     * @return The updated dataset.
+     */
+    public static String[][] discretizeColumnYear(String[][] dataset, List<Range> ranges, int column, int year, int yearColumn)
+    {
+    	// Iterate over all lines in dataset
+        for (String[] dataLine : dataset)
+        {
+        	// If it's a question mark or not the correct year, skip the line
+        	if (dataLine[column].replace("\"", "").equals("?")
+        		|| Integer.parseInt(dataLine[yearColumn].replace("\"", "")) != year)
+        	{
+        		continue;
+        	}
+
+        	// Get the value and see if it fits in any of the given ranges
+            float value = Float.parseFloat(dataLine[column].replace("\"", ""));
+            for (Range range : ranges)
+            {
+                if (range.inRange(value))
+                {
+                    dataLine[column] = range.getLowerEnd() + "-" + range.getHigherEnd();
+                }
+            }
+        }
+    	
+    	return dataset;
+    }
+    
+    /**
      * Normalizes a column in a dataset.
      * 
      * @param dataset The dataset to normalize.
@@ -102,7 +173,7 @@ public class DataSetHelpers
      * @param max The maximum value for normalization.
      * @return The normalized dataset.
      */
-    public static String[][] NormalizeDataset(
+    public static String[][] normalizeDataset(
     		String[][] dataset, int countryColumn, int yearColumn, int columnToNormalize, int min, int max)
     {
     	ArrayList<String> foundCountries = new ArrayList<String>();
@@ -150,8 +221,8 @@ public class DataSetHelpers
         		}
         	}
         	
-        	smallDataset = NormalizeSmallDataset(smallDataset, min, max);        	
-        	dataset = ReturnToLargeDataset(dataset, smallDataset, columnToNormalize);
+        	smallDataset = normalizeSmallDataset(smallDataset, min, max);        	
+        	dataset = returnToLargeDataset(dataset, smallDataset, columnToNormalize);
     	}
     	
     	return dataset;
@@ -167,7 +238,7 @@ public class DataSetHelpers
      * @param max Maximum value to use in new dataset (e.g. 1).
      * @return Updated dataset.
      */
-    private static String[][] NormalizeSmallDataset(String[][] dataset, int min, int max)
+    private static String[][] normalizeSmallDataset(String[][] dataset, int min, int max)
     {
         float minVal = Float.MAX_VALUE, maxVal = Float.MIN_VALUE;
     	
@@ -213,12 +284,11 @@ public class DataSetHelpers
      * @param columnToChange The column that is being changed.
      * @return The changed dataset.
      */
-    private static String[][] ReturnToLargeDataset(String[][] dataset, String[][] smallDataset, int columnToChange)
+    private static String[][] returnToLargeDataset(String[][] dataset, String[][] smallDataset, int columnToChange)
     {
     	int yearColumn = 0;
     	int countryColumn = 1;
     	int valueColumn = 2;
-    	int i = 0;
     	
     	// Iterates over all rows in smallDataset
     	for (String[] smallDataLine : smallDataset)

@@ -2,7 +2,7 @@ package project;
 
 import java.util.List;
 import project.kmeans.KMeans;
-import project.Enums.DataColumn;
+import project.enums.DataColumn;
 
 /**
  * Clustering datamining algorithms.
