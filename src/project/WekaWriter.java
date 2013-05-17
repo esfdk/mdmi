@@ -24,7 +24,7 @@ public class WekaWriter
 
             // Write header
             writer.append("@RELATION " + fileName + "\n");
-            writer.append("@ATTRIBUTE year DATE \"y\" " + "\n");
+            writer.append("@ATTRIBUTE year NUMERIC" + "\n");
             writer.append("@ATTRIBUTE country STRING" + "\n");
             writer.append("@ATTRIBUTE unemploymentRate NUMERIC" + "\n");
             writer.append("@ATTRIBUTE balanceOfPayments NUMERIC" + "\n");
@@ -95,7 +95,7 @@ public class WekaWriter
             
             // Write header
             writer.append("@RELATION " + fileName + "\n");
-            writer.append("@ATTRIBUTE year STRING \"y\" " + "\n");
+            writer.append("@ATTRIBUTE year NUMERIC " + "\n");
             writer.append("@ATTRIBUTE country STRING" + "\n");
             writer.append("@ATTRIBUTE unemploymentRate " + classes + "\n");
             writer.append("@ATTRIBUTE balanceOfPayments " + classes + "\n");
