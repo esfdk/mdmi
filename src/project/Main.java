@@ -70,6 +70,7 @@ public class Main {
     		
     		ranges.add(new Range(10.0f, 10.0f));
     		
+<<<<<<< HEAD
     		for(int i = 1983; i <= 2012; i++)
     		{
     			data = DataSetHelpers.discretizeColumnYear(data, ranges, DataColumn.UnemploymentRate.ordinal(), i, 0);
@@ -79,6 +80,39 @@ public class Main {
     		}
     		
     		WekaWriter.writeDataToFile(data, "apReadyDataSet");
+=======
+    		KMeans kmeans = new KMeans(5);
+    		List<DataColumn> attributes = new ArrayList<DataColumn>();
+    		
+    		/*attributes.add(DataColumn.UnemploymentRate);
+            attributes.add(DataColumn.BalanceOfPayments);
+            attributes.add(DataColumn.GdpPerInhabitant);*/
+            attributes.add(DataColumn.Population);
+            
+            kmeans.ClusterData(data, attributes);
+            
+            int[] attrIdx = new int[attributes.size()];
+            for (int i = 0; i < attrIdx.length; i++)
+            {
+                attrIdx[i] = attributes.get(i).ordinal();
+            }
+            
+            DataPoint usa = new DataPoint(new String[] { "2011", "United States", "8.9", "-339793", "34700", "310544109" }, attrIdx);
+            kmeans.AddDataPoint(usa);
+            
+            int clusterId = kmeans.getClusterIndexFromDataPoint(usa);
+            System.out.println("\nUSA ended up in cluster #" + clusterId + "\n");
+            Cluster cluster = kmeans.GetClusters().get(clusterId);
+            
+            System.out.println("Countries like USA:");
+            List<DataPoint> dataPoints = cluster.GetDataPoints();
+	        for (DataPoint dp : dataPoints)
+	        {
+	            System.out.println(dp.getOriginalAttribute(DataColumn.Country.ordinal()) + ", " + dp.getOriginalAttribute(DataColumn.Year.ordinal()));
+	        }
+            
+            printClusters(kmeans);
+>>>>>>> 01f8882c7a869c2f904bf24479fab58d99ace578
 	    }
 		catch (IOException e)
 		{
@@ -158,8 +192,11 @@ public class Main {
 	}
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 	
 =======
+=======
+>>>>>>> 01f8882c7a869c2f904bf24479fab58d99ace578
 	public static void printClusters(KMeans kmeans)
 	{
 	    List<Cluster> clusters = kmeans.GetClusters();
@@ -191,5 +228,8 @@ public class Main {
 	        i++;
 	    }
 	}
+<<<<<<< HEAD
+>>>>>>> 01f8882c7a869c2f904bf24479fab58d99ace578
+=======
 >>>>>>> 01f8882c7a869c2f904bf24479fab58d99ace578
 }
