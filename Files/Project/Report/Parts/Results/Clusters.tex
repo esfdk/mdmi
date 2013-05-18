@@ -1,7 +1,9 @@
 \subsection{Clustering}
 \label{Res_Clu}
+We cluster the data into five clusters. Assuming equal distribution of nations into the clusters, we will have \begin{math}\frac{30}{5} = 6\end{math} nations in each cluster.
 
-Using the simpleKMeans clustering algorithm in Weka results in the graph in figure \ref{fig:clusters} (a larger version can be seen in figure \ref{fig:largeClusters} in the appendix on page \pageref{fig:largeClusters}, and the clusters and their centroids in section \ref{A_kmr_clusters} on page \pageref{A_kmr_clusters} in the appendix). The x-axis is the name of the country, the y-axis is the year and the color of the cross is the cluster the country belongs to at that time.
+Running the Weka's simpleKMeans clustering algorithm with \textit{numberOfClusters} set to 5 results in the graph displayed on page \pageref{fig:clusters} (figure \ref{fig:clusters})\footnote{A larger version is illustrated by figure \ref{fig:largeClusters} on page \pageref{fig:largeClusters} in the appendix.}.
+\\The x-axis are the different European nations, the y-axis are the years and the colour is the cluster the country/year combination belongs to.
 
 \begin{figure}[h!]
   \centering
@@ -10,15 +12,22 @@ Using the simpleKMeans clustering algorithm in Weka results in the graph in figu
 \label{fig:clusters}
 \end{figure}
 
-From the graph, we can observe that there are three countries that - assuming "often" means seven or more times - change cluster often. They are Estonia, Malta and Finland. Their behaviour is somewhat eratic, however:
+There are four nations that never change cluster: Germany, Italy, Turkey and the United Kingdom. Interestingly all four of them are in the same cluster (cluster\#4). This is likely due to their population being quite comparable\footnote{Russia has a far higher population than the four mentioned countries and so it is not likely to be a stable part of that cluster.}\footnote{France has a somewhat comparable population size, so this is not necessarily the case.}.
+
+The other extreme are the countries changing clusters often. In this case we define \textit{often}\footnote{We feel that any nation changing clusters more often than every 4 years on average is quite unstable.} as 
+\begin{align*}
+often = \frac{number of years}{4} = \frac{30}{4} = 7,25 \sim 7
+\end{align*} 
+\\The nations changing cluster seven times or more are: Estonia and Finland. Malta is a close contender with 6 cluster changes. It is interesting to note that all three countries are somewhat stable for much of 1983-2012 but with some periods where they change clusters often:
+
 \begin{itemize}
-	\item Estonia starts in cluster \#0, then changes to cluster \#2 for a long while with one year in cluster \#1. Lastly it moves from cluster \#0 to cluster \#1 to cluster \#2 over the span of a few years.
-
-	\item Malta has a period where it switches between cluster \#0 and \#2 each year over a period of five years, indicating that it is right on the border of the cluster during that period.
-
-	\item Finland moves through all clusters but cluster \#4, though it stays in cluster \#0 for a bit more than half the years.
+\item Estonia starts in cluster \#0 (1983-1992), then changes to cluster \#2 for a while (1993-1999 \& 2001-2005) with one year in cluster \#1 (2000). It is in cluster \#0 during (2006-2008) then spends two years in cluster \#1 (2009-2010) closing off with two years in cluster \#2 from 2011 to 2012.
+\item Finland starts in cluster \#2 (1983), but changes to cluster \#0 in 1984 and stays there until 1991 where it goes back to cluster \#2. Finland then spends five years in cluster \#1 . In 2007 it changes to cluster \#3 (2007-2008) then spends two years in cluster \#0 (2009-2010) and the remaining two years in cluster \#3.
+\item Malta starts in cluster \#0 (1983-1994) then changes to cluster \#2 for five years (1995-1999). It is in cluster \#0 in 2000 and 2002 with two single years in cluster \#2 (2001 \& 2003). It is in cluster \#0 for the rest of the period.
 \end{itemize}
 
-There are also four countries that are the complete opposite, as they never change what cluster they are in. They are Germany, Italy, United Kingdom and Turkey and never leave cluster \#4. Furthermore, they are in the same cluster, which indicates that it is a very stable cluster and they are very stable countries.
+Injecting the United States of America (2011) into the clusters\footnote{For Weka output, see appendix section \ref{A_kmr_usa} on page \pageref{A_kmr_usa}.} puts USA into cluster \#4. Worthy of note is that cluster \#4 is also the cluster containing Germany, Italy, Turkey and the United Kingdom. Going by this clustering alone, one could argue that USA of 2011 is - economically speaking - more like these four countries that any other European countries.
 
-Inserting USA into the cluster data (with data from 2011) puts USA in cluster \#4\footnote{See appendix \ref{A_kmr_usa} on \pageref{A_kmr_usa} for the output}. This means that USA is in the same cluster as Germany, France, Italy, United Kingdom and Turkey, which means that USA is more similar to them than any other European country at that time.
+\subsubsection*{Correctness}
+\label{Res_Clu_Cor}
+While the value of "Within cluster sum of squared errors"\footnote{The lower the value of "Within cluster sum of squared errors", the closer the elements of the cluster is to the cluster centroid.} is somewhat low considering our quite attribute high values (compared to the SEE value), we still feel that our results are unreliable. Because the simpleKMeans uses Euclidean distance to compare elements, the non-normalised value of population is much more impactful than unemployment rate, thus skewering the data in a way we had not intended.

@@ -1,16 +1,16 @@
 \section{Preprocessing}
-\label{PreP}For pre-processing, we are using min-max normalisation, discretisation and handling of missing values. Only the handling of missing values are used for both the K-means algorithm and the A-priori algorithm. We only use min-max normalisation and discretisation for the A-priori algorithm.
-
-\subsection{Normalisation and discretisation}
-Min-max normalisation is used for the A-priori algorithm. We don't use it for the K-means algorithm, as it does not provide us with any value, due to the calculation of Euclidean distance.
-
-For the A-priori algorithm, our attribute values must only vary if a greater change occur, or else our algorithm won't be able to detect any patterns. In order to do so, we normalise our data within each year, from 0 to 10. In other words, the maximum value in one year, will get a new value of 10, even though another year has a higher maximum value. This means that even though a value is increasing every year, it will still get a 10 if it keep being the highest maximum value the following years.
-
-We use min-max normalisation for the unemployment rate, balance of payments, GDP per inhabitant and population attributes.
-
-Together with the min-max normalisation for the A-priori algorithm, we do discretisation on the above-mentioned four attributes. The data is then divided into 20 groups in jumps of 0.5.
+\label{PreP}
+We use min-max normalisation, discretisation and handling of missing values in this project. We fill in the missing values in the data used for both algorithms. We only do normalisation and discretisation on the data used in the k-means algorithm.
 
 \subsection{Missing values}
 When getting our data from Eurostat, missing values were marked with ':'. Since Weka can handle missing values on its own, we just need to convert it, to something Weka can understand ('?'). So as part of our pre-processing, we go through the data, and replace colons with a questionmark.
 
-Depending on the settings, Weka can either ignore the missing values, or use the mean value for that attribute. In our case, we set up Weka to use the mean values.
+Depending on the settings, Weka can either ignore the missing values, or use the mean value for that attribute. In our case, we set up Weka to use the mean values. We use the mean values because we rather include data with missing values than to not get results at all (because we limited amounts of entries). 
+\\This does bias the data \cite[p. ~90]{DataMining}, which is something to take into consideration when making any conclusions about what the data actually tells us.
+
+\subsection{Normalisation and discretisation}
+Our attribute values must be nominal values to be mined for frequent patterns, as it is otherwise highly unlikely that any frequent pattern will be detected. In order to transform the unemployment rate, balance of payments, GDP/inhabitant and population attributes into nominal values, we do the normalisation and discretisation.
+
+We normalise our data within each year from 0 to 5. The maximum value in a specific year will get a new value of 5 - even though another year may have a higher maximum value\footnote{This is to account for inflation.}. This means that even though a maximum value may increase every year, it will still be a 5 if it is the maximum value in other years.
+
+After we have normalised our data, we discretise our data into nominal values by giving them one of 11 values (0.0-0.5, 0.5-1.0, 1.0-1.5, ..., 4.5-5.0, 5.0).
