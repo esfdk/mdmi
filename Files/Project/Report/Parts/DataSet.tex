@@ -1,2 +1,14 @@
-\section{Data sets}
+\chapter{Data sets}
 \label{DataSets}
+Our final dataset consists of four datasets collected from Eurostat\footnote{See website for more details: http://ec.europa.eu/eurostat‎}, which we have combined into one single dataset. It consists of data for unemployment rate, balance of payments, GDB per inhabitant and population from a set of countries primarily located in the European Union. Our dataset contains data from 1983 to 2012.
+
+For combining the dataset, we wrote our own algorithm for matching the datasets on country and year, and fill in the values from each dataset into its own column in the final dataset. In order to find the data we use in our project, the following search words are used\footnote{Search at http://epp.eurostat.ec.europa.eu/portal/page/portal/statistics/search_database}:
+
+\begin{my_itemize}
+\item{Unemployment rate} une_rt_a
+\item{Balance of payments} bop_q_c
+\item{GDP per inhabitant} nama_gdp_c
+\item{Population} demo_pjan
+\end{my_itemize}
+
+We assume Eurostat to be a trustworthy source of data, as Eurostat is a part of the European Commision. Its main responsibilities are to provide statistical information to the institutions of the European Union and to promote the harmonisation of statistical methods across its member states. Their data is provided directly from the member countries, and thus is not influenced by propaganda and the like. The data and statistics are available free of charge from their website.
