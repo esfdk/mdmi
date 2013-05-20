@@ -1,15 +1,17 @@
-\section{Data sets}
+\section{Data}
 \label{DataSets}
+Our dataset is a combination of four datasets collected from Eurostat\footnote{epp.eurostat.ec.europa.eu/portal/page/portal/statistics/search\_database}. These datasets contain data from thirty or more years back. We combined the datasets based on year and name of the nation using a self-written algorithm. 
 
-Our final dataset consists of four datasets collected from Eurostat\footnote{See website for more details: http://ec.europa.eu/eurostatt}, which we have combined into one single dataset. It consists of data for unemployment rate, balance of payments, GDB per inhabitant and population from a set of countries primarily located in the European Union. Our dataset contains data from 1983 to 2012.
+Eurostat gives multiple options in extracting the data. We chose data from the European nations in the years 1983-2012.
 
-For combining the dataset, we wrote our own algorithm for matching the datasets on country and year, and fill in the values from each dataset into its own column in the final dataset. In order to find the data we use in our project, the following search words are used\footnote{Search at http://epp.eurostat.ec.europa.eu/portal/page/portal/statistics/search\_database}:
+The four datasets (and their identifiers in the database) are:
+\begin{my_description}
+\item[Unemployment rate]\footnote{Selected values in extraction: S\_ADJ="Not seasonally adjusted data"; Age = "Total"; Sex="Total".}Database search term: une\_rt\_a 
+\item[Balance of payments]\footnote{Selected values in extraction: Currency= Million Euro; Post = Current account; Flow = "Net"; Partner="All countries of the world".}Database search term: bop\_q\_c
+\item[GDP per inhabitant]\footnote{Selected values in extraction: Unit="Euro per inhabitant"; Indic\_NA="Gross domestic product at market prices".}Database search term: nama\_gdp\_c
+\item[Population]\footnote{Selected values in extraction: Age="Total"; Sex="Total";}Database search term: demo\_pjan
+\end{my_description}
 
-\begin{my_itemize}
-\item{Unemployment rate} une\_rt\_a
-\item{Balance of payments} bop\_q\_c
-\item{GDP per inhabitant} nama\_gdp\_c
-\item{Population} demo\_pjan
-\end{my_itemize}
+We consider Eurostat to be a reliable source of data, as Eurostat is a part of the European Commission. Its main responsibilities are to provide statistical information to the institutions of the European Union and to promote harmonisation of statistical methods across the member states. The data and statistics is provided by the members of the European Union and is available free of charge from the Eurostat website.
 
-We assume Eurostat to be a trustworthy source of data, as Eurostat is a part of the European Commision. Its main responsibilities are to provide statistical information to the institutions of the European Union and to promote the harmonisation of statistical methods across its member states. Their data is provided directly from the member countries, and thus is not influenced by propaganda and the like. The data and statistics are available free of charge from their website.
+As some nations may not have had data available or been part of the European Union in the 80s and 90s, Eurostat have some missing values in the dataset. The dataset is quite clean except for this missing data.
