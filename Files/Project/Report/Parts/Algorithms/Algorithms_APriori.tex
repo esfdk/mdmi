@@ -3,7 +3,7 @@
 Apriori uses an iterative approach to find frequent itemsets. First it finds the 1-element itemsets that have a count higher than or equal to the minimum support value\footnote{The support value is the number of times an itemset appears in the dataset. If an itemset is above or equal to the minimum support value, it is considered frequent.}. Next it finds the set of 2-element itemsets that satisfy the minimum support. This is repeated until no more frequent \textit{k}-itemsets can be found.
 
 The efficiency of the Apriori algorithm can be improved by using the \textbf{Apriori property}: "\textit{All non-empty subsets of a frequent itemset must also be frequent.}" \cite[p. 249]{DataMining}. If an itemset I does not satisfy the minimum support threshold, then I is not frequent. If an item A is added to itemset I, then the resulting itemset (I $\cup$ A) cannot occur more frequently than I. Therefore, I $\cup$ A is not frequent.
-\\The confidence of association rules generated when using Apriori can be calculated using the following\footnote{\cite[p. ~246]{DataMining}}:
+\\The confidence of association rules generated when using Apriori can be calculated using the following equation\footnote{\cite[p. ~246]{DataMining}}:
 \begin{align*}
 confidence(A=>B) \equiv P(B|A) = \frac{support (A \cup B)}{support(A)} = \frac{support_count(A \cup B}{support_count(A)}
 \end{align*}
